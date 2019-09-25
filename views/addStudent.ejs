@@ -1,0 +1,188 @@
+<% include partials/header %>
+
+<div class="container">
+	<div class="container text-center mt-5">
+		<h1>
+			Add a new Student
+		</h1>
+	</div>
+	
+	<form action="/" method="POST">
+		<div class="container my-5">
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">Registration No</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+						<input type="text" class="form-control w-75" placeholder="Registration No">
+					</div>
+				</div>
+			</div>
+
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">Aadhar No</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+						<input type="text" class="form-control w-75" placeholder="Aadhar No">
+					</div>
+				</div>
+			</div>
+
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">Student's Name</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+						<input type="text" class="form-control w-75" placeholder="Student's Name">
+					</div>
+				</div>
+			</div>
+
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">Father's Name</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+						<input type="text" class="form-control w-75" placeholder="Father's Name">
+					</div>
+				</div>
+			</div>
+
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">Gender</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+
+						<div class="row justify-content-start px-4">
+							<div class="col col-md-4">
+								<input class="form-check-input" type="radio" name="gender" id="male" value="Male">
+								<label class="">Male</label>
+							</div>
+							<div class="col col-md-4">
+								<input class="form-check-input" type="radio" name="gender" id="female" value="Female">
+								<label class="">Female</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">Admission Year</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+						<select class="form-control w-75">
+							<option>2018-2019</option>
+							<option>2019-2020</option>
+							<option>2020-2021</option>
+							<option>2021-2022</option>
+							<option>2022-2023</option>
+							<option>2023-2024</option>
+							<option>2024-2025</option>
+							<option>2025-2026</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">Course</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+						<select class="form-control w-75">
+							<option>B. Tech.</option>
+							<option>M. Tech</option>
+							<option>MBA</option>
+						</select>
+					</div>
+				</div>
+			</div>
+	<!-- 	 How do I select the next dropdown on the basis of above dropdowns	 -->
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">Branch</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+						<select class="form-control w-75">
+							<option>CS</option>
+							<option>IT</option>
+							<option>ECE</option>
+							<option>ME</option>
+							<option>EE</option>
+							<option>CE</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">Admission Mode</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+						<select class="form-control w-75">
+							<option>REAP</option>
+							<option>CAM</option>
+							<option>LEEP</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">Contact No. 1</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+						<input type="text" class="form-control w-75" placeholder="Contact No. 1">
+					</div>
+				</div>
+			</div>
+
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">Contact No. 2</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+						<input type="text" class="form-control w-75" placeholder="Contact No. 2">
+					</div>
+				</div>
+			</div>
+
+			<div class="container form-group">
+				<div class="row form-group justify-content-end">
+					<div class="col col-md-2 mx-5">
+						<label class="font-weight-bold ">E-mail</label>
+					</div>
+					<div class="col col-md-6 mx-5">
+						<input type="email" class="form-control w-75" placeholder="E-mail">
+					</div>
+				</div>
+			</div>
+
+			<div class="container form-group">
+				<div class="row form-group">
+					<div class="col-md-12 text-center">
+						<button type="submit" class="btn btn-primary mb-2 px-auto">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<%include partials/footer %>
