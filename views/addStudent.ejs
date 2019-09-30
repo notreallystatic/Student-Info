@@ -45,7 +45,7 @@
 				</h1>
 			</div>
 
-			<form action="/" method="POST">
+			<form action="/addStudent" method="POST">
 				<div class="container my-5">
 					<div class="container form-group">
 						<div class="row form-group justify-content-end">
@@ -53,7 +53,7 @@
 								<label class="font-weight-bold ">Registration No</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" id="regNo" placeholder="Registration No">
+								<input type="text" class="form-control w-75" id="regNo" name="RegnNo" placeholder="Registration No">
 							</div>
 						</div>
 					</div>
@@ -64,7 +64,7 @@
 								<label class="font-weight-bold ">Aadhar No</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" id="aadharNo" placeholder="Aadhar No">
+								<input type="text" class="form-control w-75" id="aadharNo" name="AadhaarNo" placeholder="Aadhar No">
 							</div>
 						</div>
 					</div>
@@ -75,7 +75,7 @@
 								<label class="font-weight-bold ">Student's Name</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" id="sname" placeholder="Student's Name">
+								<input type="text" class="form-control w-75" id="sname" name="Name" placeholder="Student's Name">
 							</div>
 						</div>
 					</div>
@@ -86,7 +86,7 @@
 								<label class="font-weight-bold ">Father's Name</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" id="fname" placeholder="Father's Name">
+								<input type="text" class="form-control w-75" id="fname" name="Fname" placeholder="Father's Name">
 							</div>
 						</div>
 					</div>
@@ -100,11 +100,11 @@
 
 								<div class="row justify-content-start px-4">
 									<div class="col col-md-4">
-										<input class="form-check-input" type="radio" name="gender" id="male" value="Male">
+										<input class="form-check-input" type="radio"  name="Gender" id="male" value="Male">
 										<label class="">Male</label>
 									</div>
 									<div class="col col-md-4">
-										<input class="form-check-input" type="radio" name="gender" id="female" value="Female">
+										<input class="form-check-input" type="radio"  id="female" name="Gender" value="Female">
 										<label class="">Female</label>
 									</div>
 								</div>
@@ -117,7 +117,7 @@
 								<label class="font-weight-bold ">Admission Year</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<select class="form-control w-75">
+								<select class="form-control w-75" name="AdmissionYear">
 									<option>2018-2019</option>
 									<option>2019-2020</option>
 									<option>2020-2021</option>
@@ -138,7 +138,7 @@
 								<label class="font-weight-bold ">Course</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<select class="form-control w-75" id="course" onchange="fun(this.value)">
+								<select class="form-control w-75" id="course" onchange="fun(this.value)" name="Course">
 									<option value="BTech" selected>B.Tech.</option>
 									<option value="MTech">M.Tech</option>
 									<option value="MBA">MBA</option>
@@ -153,7 +153,7 @@
 								<label class="font-weight-bold ">Branch</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<select class="form-control w-75" id="btech">
+								<select class="form-control w-75" id="btech" name="Branch">
 									<option id="cs">CS</option>
 									<option id="it">IT</option>
 									<option id="ece">ECE</option>
@@ -161,7 +161,7 @@
 									<option id="ee">EE</option>
 									<option id="ce">CE</option>
 								</select>
-								<select class="form-control w-75 d-none" id="mtech">
+								<select class="form-control w-75 d-none" id="mtech" name="Branch">
 									<option id="cs">CS</option>
 									<option id="ps">PS</option>
 									<option id="dc">DC</option>
@@ -170,10 +170,27 @@
 									<option id="ret">RET</option>
 									<option id="te">TE</option>
 								</select>
-								<select class="form-control w-75 d-none" id="mba">
+								<select class="form-control w-75 d-none" id="mba" name="Branch" >
 									<option id="mba">MBA</option>
 								</select>
 
+							</div>
+						</div>
+					</div>
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Allotment Category</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<select class="form-control w-75" name="AllotmentCategory">
+									<option>SFS</option>
+									<option>EWS</option>
+									<option>TFWS</option>
+									<option> KM </option>
+									<option> PMSSS</option>
+									
+								</select>
 							</div>
 						</div>
 					</div>
@@ -184,7 +201,7 @@
 								<label class="font-weight-bold ">Admission Mode</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<select class="form-control w-75">
+								<select class="form-control w-75" name="AdmissionMode">
 									<option>REAP</option>
 									<option>CAM</option>
 									<option>LEEP</option>
@@ -199,7 +216,7 @@
 								<label class="font-weight-bold ">Contact No. 1</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" id="cn1" placeholder="Contact No. 1">
+								<input type="text" class="form-control w-75" id="cn1" placeholder="Contact No. 1" name="Contact1">
 							</div>
 						</div>
 					</div>
@@ -210,7 +227,7 @@
 								<label class="font-weight-bold ">Contact No. 2</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" id="cn2" placeholder="Contact No. 2">
+								<input type="text" class="form-control w-75" id="cn2" placeholder="Contact No. 2" name="Contact2" name=>
 							</div>
 						</div>
 					</div>
@@ -221,7 +238,7 @@
 								<label class="font-weight-bold ">E-mail</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="email" class="form-control w-75" id="email" placeholder="E-mail">
+								<input type="email" class="form-control w-75" id="email" placeholder="E-mail" name="Email">
 							</div>
 						</div>
 					</div>
