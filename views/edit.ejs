@@ -1,0 +1,257 @@
+<html>
+	<head>
+		<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+		<script>
+		
+			function fun(val)
+			{
+				if(val == "BTech")
+				{
+					$('#mtech').addClass('d-none');
+					$('#mba').addClass('d-none')
+					$('#btech').removeClass('d-none');
+				}
+				else if(val == "MTech")
+				{
+					$('#btech').addClass('d-none');
+					$('#mba').addClass('d-none')
+					$('#mtech').removeClass('d-none');
+				}
+				else if(val == "MBA")
+				{
+					$('#mtech').addClass('d-none');
+					$('#btech').addClass('d-none')
+					$('#mba').removeClass('d-none');
+				}
+			}
+		</script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<title>Student Info</title>
+	</head>
+	<body>
+		<nav class="navbar bg-dark">
+			<a class="navbar-brand text-light" href='/'>Home</a>
+		</nav>
+
+
+		<div class="container">
+			<div class="container text-center mt-5">
+				<h1>
+					Edit Student <%= student.Name %>
+				</h1>
+			</div>
+
+			<form action="/addStudent" method="POST">
+				<div class="container my-5">
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Registration No</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<input type="text" class="form-control w-75" id="regNo" name="RegnNo" placeholder="Registration No" value='<%=student.RegnNo%>'>
+							</div>
+						</div>
+					</div>
+
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Aadhar No</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<input type="text" class="form-control w-75" id="aadharNo" name="AadhaarNo" placeholder="Aadhar No" value='<%= student.AadhaarNo %>'>
+							</div>
+						</div>
+					</div>
+
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Student's Name</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<input type="text" class="form-control w-75" id="sname" name="Name" placeholder="Student's Name" value="<%= student.Name %>">
+							</div>
+						</div>
+					</div>
+
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Father's Name</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<input type="text" class="form-control w-75" id="fname" name="Fname" placeholder="Father's Name" value="<%= student.Fname %>">
+							</div>
+						</div>
+					</div>
+
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Gender</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+
+								<div class="row justify-content-start px-4">
+									<div class="col col-md-4">
+										<input class="form-check-input" type="radio"  name="Gender" id="male" value="">
+										<label class="">Male</label>
+									</div>
+									<div class="col col-md-4">
+										<input class="form-check-input" type="radio"  id="female" name="Gender" value="">
+										<label class="">Female</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Admission Year</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<select class="form-control w-75" name="AdmissionYear">
+									<option>2018-2019</option>
+									<option>2019-2020</option>
+									<option>2020-2021</option>
+									<option>2021-2022</option>
+									<option>2022-2023</option>
+									<option>2023-2024</option>
+									<option>2024-2025</option>
+									<option>2025-2026</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+			<!-- 	 How do I select the next dropdown on the basis of above dropdowns	 -->
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Course</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<select class="form-control w-75" id="course" onchange="fun(this.value)" name="Course">
+									<option value="BTech" selected>B.Tech.</option>
+									<option value="MTech">M.Tech</option>
+									<option value="MBA">MBA</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Branch</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<select class="form-control w-75" id="btech" name="Branch">
+									<option id="cs">CS</option>
+									<option id="it">IT</option>
+									<option id="ece">ECE</option>
+									<option id="me">ME</option>
+									<option id="ee">EE</option>
+									<option id="ce">CE</option>
+								</select>
+								<select class="form-control w-75 d-none" id="mtech" name="Branch">
+									<option id="cs">CS</option>
+									<option id="ps">PS</option>
+									<option id="dc">DC</option>
+									<option id="vlsi">VLSI</option>
+									<option id="pe">PE</option>
+									<option id="ret">RET</option>
+									<option id="te">TE</option>
+								</select>
+								<select class="form-control w-75 d-none" id="mba" name="Branch" >
+									<option id="mba">MBA</option>
+								</select>
+
+							</div>
+						</div>
+					</div>
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Allotment Category</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<select class="form-control w-75" name="AllotmentCategory">
+									<option>SFS</option>
+									<option>EWS</option>
+									<option>TFWS</option>
+									<option> KM </option>
+									<option> PMSSS</option>
+									
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Admission Mode</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<select class="form-control w-75" name="AdmissionMode">
+									<option>REAP</option>
+									<option>CAM</option>
+									<option>LEEP</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Contact No. 1</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<input type="text" class="form-control w-75" id="cn1" placeholder="Contact No. 1" name="Contact1" value="<%= student.Contact1 %>">
+							</div>
+						</div>
+					</div>
+
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">Contact No. 2</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<input type="text" class="form-control w-75" id="cn2" placeholder="Contact No. 2" name="Contact2" value="<%= student.Contact2 %>">
+							</div>
+						</div>
+					</div>
+
+					<div class="container form-group">
+						<div class="row form-group justify-content-end">
+							<div class="col col-md-2 mx-5">
+								<label class="font-weight-bold ">E-mail</label>
+							</div>
+							<div class="col col-md-6 mx-5">
+								<input type="email" class="form-control w-75" id="email" placeholder="E-mail" name="Email" value="<%= student.Email %>">
+							</div>
+						</div>
+					</div>
+
+					<div class="container form-group">
+						<div class="row form-group">
+							<div class="col-md-12 text-center">
+								<button type="submit" class="btn btn-primary mb-2 px-auto">Submit</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</body>	
+</html>

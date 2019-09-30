@@ -2,31 +2,10 @@ const express	 =	 require('express'),
 	  app        =	 express(),
 	  mongoose	 = 	 require('mongoose'),
 	  bodyParser =   require('body-parser'),
-	  Schema = mongoose.Schema;
+	  Student 	 =	 require('./models/student'),
+	  Document   =   require('./models/document');
 
-mongoose.connect('mongodb://localhost:27017/Student-info', {useNewUrlParser: true},function(error){
-		//console.log(error);
-	  });
-
-
-const StudentSchema = new Schema({
-		RegnNo: String ,
-		AadhaarNo: String, 
-		Name:String,
-		Fname:String,
-		Gender:String,
-		AdmissionYear:String,
-		Course:String,
-		Branch:String,
-		AllotmentCategory:String,
-		AdmissionMode: String,
-		Contact1:String,
-		Contact2:String,
-		Email:String
-	
-	});
-	
-	const Student = mongoose.model('Students', StudentSchema);
+mongoose.connect('mongodb://localhost:27017/Student-info', {useNewUrlParser: true},function(error) {});
 
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -85,21 +64,38 @@ app.post('/addStudent', (req, res) => {
 		student.Branch =req.body.Branch[1];
 	}
 	else{
-		
 			student.Branch = req.body.Branch[2];
-			
-		
 	}
 	student.save();
 	
 	res.send("Student post route");
 })
 
+
+// Edit Student Route
+app.get('/edit', (req, res) => {
+	
+	Student.findOne({"RegnNo": "121"}, (err, student) => {
+		if (err) {
+			res.redirect('/');
+		} else {
+			res.render('edit', {student: student});	
+		}
+	});
+});
+
+
 // Submit Document Route
-// This route will allow the admin to Submit Documents of a Studnet, either by searching a Student using his id or by selecting one from the given table.
+// This route will allow the admin to Submit Documents of a Student, either by searching a Student using his id or by selecting one from the given table.
 app.get('/submitDocument', (req, res) => {
 	res.render('submitDocument');
 })
+
+app.post('/submitDocument', (req, res) => {
+	console.log(req.body);
+	res.render('submitDocuments');
+})
+
 // This route will take the admin to submit the documents of the selected/searched student.
 app.get('/submitDocument/:id', (req, res) => {
 	res.render('submitDocumentID');
