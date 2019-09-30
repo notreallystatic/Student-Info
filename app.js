@@ -38,6 +38,16 @@ app.post('/addStudent', (req, res) => {
 	res.send("Student post route");
 })
 
+// Submit Document Route
+// This route will allow the admin to Submit Documents of a Studnet, either by searching a Student using his id or by selecting one from the given table.
+app.get('/submitDocument', (req, res) => {
+	res.render('submitDocument');
+})
+// This route will take the admin to submit the documents of the selected/searched student.
+app.get('/submitDocument/:id', (req, res) => {
+	res.render('submitDocumentID');
+})
+
 app.listen(3000, () => {	
 	console.log('Server is running...');
 })
