@@ -15,12 +15,12 @@
 		
 <!-- 	Form to Search for a Student using student id	 -->
 		<div class="container my-5">
-			<form class="form-inline row mx-5">
+			<form class="form-inline row mx-5" method="POST" action="/submitDocument/searchById">
 				<div class="form-group mb-2 col-md-4 justify-content-end">
 					<label class="font-weight-bold mx-auto w-100">Student Id</label>
 				</div>
 				<div class="form-group mx-sm-3 mb-2 col-md-4 justify-content-end">
-					<input type="text" class="form-control mx-auto w-100" id="id" placeholder="student id">
+					<input type="text" class="form-control mx-auto w-100" name="id" placeholder="student id">
 				</div>
 				<button type="submit" class="btn btn-primary mb-2 col-md-3 mx-auto justify-content-end">Confirm</button>
 			</form>
@@ -30,7 +30,7 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th scope="col">Id</th>
+						<th scope="col">Regn No</th>
 						<th scope="col">Name</th>
 						<th scope="col">Branch</th>
 						<th scope="col">Year</th>
@@ -38,30 +38,17 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<th scope="row">1</th>
-						<td>Mark</td>
-						<td>Otto</td>
-						<td>@mdo</td>
-						<td class="px-auto"><a href="/" class="btn btn-warning btn-sm w-50 mx-auto">Edit</a></td>
+					<% students.forEach((student) => { %>
+						<tr>
+						<th scope="row"><%= student.RegnNo %></th>
+						<td><%= student.Name %></td>
+						<td><%= student.Branch %></td>
+						<td><%= student.AdmissionYear %></td>
+						<td class="px-auto"><a href="/submitDocument/<%= student.RegnNo %>" class="btn btn-warning btn-sm w-50 mx-auto">Edit</a></td>
 					</tr>
-					<tr>
-						<th scope="row">2</th>
-						<td>Jacob</td>
-						<td>Thornton</td>
-						<td>@fat</td>
-						<td class="px-auto"><a href="/" class="btn btn-warning btn-sm w-50 mx-auto">Edit</a></td>
-					</tr>
-					<tr>
-						<th scope="row">3</th>
-						<td>Larry</td>
-						<td>the Bird</td>
-						<td>@twitter</td>
-						<td class="px-auto"><a href="/" class="btn btn-warning btn-sm w-50 mx-auto">Edit</a></td>
-					</tr>
+					<% }) %>
 				</tbody>
 			</table>
 		</div>
-		
 	</body>
 </html>

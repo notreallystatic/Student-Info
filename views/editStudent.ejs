@@ -4,9 +4,16 @@
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
   crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<script>
+			/*
+				Function to Toggle three listbox according to the selected Course.
+				If the User will select B.Tech in the Course option, then the Branch options will be changed according to the branched available in the B.Tech course.
+				We will call this function whenever user changes course from B.Tech to any other course.
+			*/
 			function funToggle(val)
 			{
+				console.log("inside function");
 				if(val == "BTech")
 				{
 					$('#MTech').addClass('d-none');
@@ -26,14 +33,20 @@
 					$('#MBA').removeClass('d-none');
 				}
 			}
+			// Convert the passed DBMS object into JSON object.
+			const student = <%- JSON.stringify(student) %>;
 			
-			// for(let i = 0; i < year.options.length; i++) {
-			// 	if (year.options[i].text == student.AdmissionYear)
-			// 		year.options[i].selected = true;
-			// }
-			
+			// To execute some jQuery instructions when the webpage loads, you need to use this function.
+			$(document).ready( () => {
+				funToggle(student.Course);
+    			$('#course').val(student.Course);			// To select the previous course
+				$('#' + student.Course).val(student.Branch);		// To select the previous branch
+				$('#AllotmentCategory').val(student.AllotmentCategory);		// To select the previous AllotmentCategory
+				$('#AdmissionMode').val(student.AdmissionMode);
+				$('#AdmissionYear').val(student.AdmissionYear);
+				$('#' + student.Gender).prop("checked", true);
+			});
 		</script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 		<title>Student Info</title>
 	</head>
@@ -42,15 +55,15 @@
 			<a class="navbar-brand text-light" href='/'>Home</a>
 		</nav>
 
-
 		<div class="container">
 			<div class="container text-center mt-5">
 				<h1>
-					Add a new Student
+					Edit Student <%= student.Name %>
 				</h1>
 			</div>
 
-			<form action="/addStudent" method="POST">
+<!-- After the submission of this form, user will be redirected to another webpage. During the process, all the previous values of the selected 'student' will be over-written by the new values. -->
+			<form action="/edit/<%=student._id%>" method="POST">
 				<div class="container my-5">
 					<div class="container form-group">
 						<div class="row form-group justify-content-end">
@@ -58,7 +71,7 @@
 								<label class="font-weight-bold ">Registration No</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" name="RegnNo" placeholder="Registration No">
+								<input type="text" class="form-control w-75" id="regNo" name="RegnNo" placeholder="Registration No" value='<%=student.RegnNo%>'>
 							</div>
 						</div>
 					</div>
@@ -69,7 +82,7 @@
 								<label class="font-weight-bold ">Aadhar No</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" name="AadhaarNo" placeholder="Aadhar No">
+								<input type="text" class="form-control w-75" id="aadharNo" name="AadhaarNo" placeholder="Aadhar No" value='<%= student.AadhaarNo %>'>
 							</div>
 						</div>
 					</div>
@@ -80,7 +93,7 @@
 								<label class="font-weight-bold ">Student's Name</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" name="Name" placeholder="Student's Name">
+								<input type="text" class="form-control w-75" id="sname" name="Name" placeholder="Student's Name" value="<%= student.Name %>">
 							</div>
 						</div>
 					</div>
@@ -91,7 +104,7 @@
 								<label class="font-weight-bold ">Father's Name</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" name="Fname" placeholder="Father's Name">
+								<input type="text" class="form-control w-75" id="fname" name="Fname" placeholder="Father's Name" value="<%= student.Fname %>">
 							</div>
 						</div>
 					</div>
@@ -105,11 +118,11 @@
 
 								<div class="row justify-content-start px-4">
 									<div class="col col-md-4">
-										<input class="form-check-input" type="radio"  name="Gender" id="male" value="Male">
+										<input class="form-check-input" type="radio"  name="Gender" id="Male" value="Male">
 										<label class="">Male</label>
 									</div>
 									<div class="col col-md-4">
-										<input class="form-check-input" type="radio"  id="female" name="Gender" value="Female">
+										<input class="form-check-input" type="radio"  id="Female" name="Gender" value="Female">
 										<label class="">Female</label>
 									</div>
 								</div>
@@ -123,19 +136,20 @@
 							</div>
 							<div class="col col-md-6 mx-5">
 								<select class="form-control w-75" id="AdmissionYear" name="AdmissionYear">
-									<option>2018-2019</option>
-									<option>2019-2020</option>
-									<option>2020-2021</option>
-									<option>2021-2022</option>
-									<option>2022-2023</option>
-									<option>2023-2024</option>
-									<option>2024-2025</option>
-									<option>2025-2026</option>
+									<option value="2018-2019">2018-2019</option>
+									<option value="2019-2020">2019-2020</option>
+									<option value="2020-2021">2020-2021</option>
+									<option value="2021-2022">2021-2022</option>
+									<option value="2022-2023">2022-2023</option>
+									<option value="2023-2024">2023-2024</option>
+									<option value="2024-2025">2024-2025</option>
+									<option value="2025-2026">2025-2026</option>
 								</select>
 							</div>
 						</div>
 					</div>
-					
+
+			<!-- 	 How do I select the next dropdown on the basis of above dropdowns	 -->
 					<div class="container form-group">
 						<div class="row form-group justify-content-end">
 							<div class="col col-md-2 mx-5">
@@ -158,25 +172,26 @@
 							</div>
 							<div class="col col-md-6 mx-5">
 								<select class="form-control w-75" id="BTech" name="Branch">
-									<option>CS</option>
-									<option>IT</option>
-									<option>ECE</option>
-									<option>ME</option>
-									<option>EE</option>
-									<option>CE</option>
+									<option value="CS">CS</option>
+									<option value="IT">IT</option>
+									<option value="ECE">ECE</option>
+									<option value="ME">ME</option>
+									<option value="EE">EE</option>
+									<option value="CE">CE</option>
 								</select>
 								<select class="form-control w-75 d-none" id="MTech" name="Branch">
-									<option>CS</option>
-									<option>PS</option>
-									<option>DC</option>
-									<option>VLSI</option>
-									<option>PE</option>
-									<option>RET</option>
-									<option>TE</option>
+									<option value="CS">CS</option>
+									<option value="PS">PS</option>
+									<option value="DC">DC</option>
+									<option value="VLSI">VLSI</option>
+									<option value="PE">PE</option>
+									<option value="RET">RET</option>
+									<option value="TE">TE</option>
 								</select>
 								<select class="form-control w-75 d-none" id="MBA" name="Branch" >
-									<option>MBA</option>
+									<option value="MBA">MBA</option>
 								</select>
+
 							</div>
 						</div>
 					</div>
@@ -187,11 +202,11 @@
 							</div>
 							<div class="col col-md-6 mx-5">
 								<select class="form-control w-75" id="AllotmentCategory" name="AllotmentCategory">
-									<option>SFS</option>
-									<option>EWS</option>
-									<option>TFWS</option>
-									<option>KM</option>
-									<option>PMSSS</option>
+									<option value="SFS">SFS</option>
+									<option vlaue="EWS">EWS</option>
+									<option vlaue="TFWS">TFWS</option>
+									<option vlaue="KM">KM</option>
+									<option vlaue="PMSSS">PMSSS</option>
 								</select>
 							</div>
 						</div>
@@ -204,9 +219,9 @@
 							</div>
 							<div class="col col-md-6 mx-5">
 								<select class="form-control w-75" id="AdmissionMode" name="AdmissionMode">
-									<option>REAP</option>
-									<option>CAM</option>
-									<option>LEEP</option>
+									<option value="REAP">REAP</option>
+									<option value="CAM">CAM</option>
+									<option value="LEEP">LEEP</option>
 								</select>
 							</div>
 						</div>
@@ -218,7 +233,7 @@
 								<label class="font-weight-bold ">Contact No. 1</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" placeholder="Contact No. 1" name="Contact1">
+								<input type="text" class="form-control w-75" id="cn1" placeholder="Contact No. 1" name="Contact1" value="<%= student.Contact1 %>">
 							</div>
 						</div>
 					</div>
@@ -229,7 +244,7 @@
 								<label class="font-weight-bold ">Contact No. 2</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" placeholder="Contact No. 2" name="Contact2" name=>
+								<input type="text" class="form-control w-75" id="cn2" placeholder="Contact No. 2" name="Contact2" value="<%= student.Contact2 %>">
 							</div>
 						</div>
 					</div>
@@ -240,7 +255,7 @@
 								<label class="font-weight-bold ">E-mail</label>
 							</div>
 							<div class="col col-md-6 mx-5">
-								<input type="email" class="form-control w-75" placeholder="E-mail" name="Email">
+								<input type="email" class="form-control w-75" id="email" placeholder="E-mail" name="Email" value="<%= student.Email %>">
 							</div>
 						</div>
 					</div>
