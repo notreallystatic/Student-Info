@@ -4,15 +4,18 @@ const DocumentSchema= new mongoose.Schema({
 	StudentID:{
 		type:String
 	},
+	Status:{
+		type:String
+	},
 	xmarksheet:{
-		original:{
+		Original:{
 			type:String
 		},
 		Photocopy:{
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -22,14 +25,14 @@ const DocumentSchema= new mongoose.Schema({
 		}
 	},
 	xiimarksheet:{
-		original:{
+		Original:{
 			type:String
 		},
 		Photocopy:{
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -39,14 +42,14 @@ const DocumentSchema= new mongoose.Schema({
 		}
 	},
 	SemesterWise:{
-		original:{
+		Original:{
 			type:String
 		},
 		Photocopy:{
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -56,14 +59,14 @@ const DocumentSchema= new mongoose.Schema({
 		}
 	},
 	Provisional:{
-		original:{
+		Original:{
 			type:String
 		},
 		Photocopy:{
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -73,14 +76,14 @@ const DocumentSchema= new mongoose.Schema({
 		}
 	},
 	Migration:{
-		original:{
+		Original:{
 			type:String
 		},
 		Photocopy:{
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -94,7 +97,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -108,7 +111,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -122,7 +125,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -136,7 +139,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -150,7 +153,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -160,14 +163,14 @@ const DocumentSchema= new mongoose.Schema({
 		}
 	},
 	TransferCertificate:{
-		original:{
+		Original:{
 			type:String
 		},
 		Photocopy:{
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -178,14 +181,14 @@ const DocumentSchema= new mongoose.Schema({
 	},
 
 	CharacterCertificate:{
-		original:{
+		Original:{
 			type:String
 		},
 		Photocopy:{
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -199,7 +202,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -213,7 +216,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -227,7 +230,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -237,14 +240,14 @@ const DocumentSchema= new mongoose.Schema({
 		}
 	},
 	MedicalCertificate:{
-		original:{
+		Original:{
 			type:String
 		},
 		Photocopy:{
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -258,7 +261,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -272,7 +275,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -287,7 +290,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -297,14 +300,14 @@ const DocumentSchema= new mongoose.Schema({
 		}
 	},
 	Photograph:{
-		original:{
+		Original:{
 			type:String
 		},
 		Photocopy:{
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -318,7 +321,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -332,7 +335,7 @@ const DocumentSchema= new mongoose.Schema({
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -342,14 +345,14 @@ const DocumentSchema= new mongoose.Schema({
 		}
 	},
 	FeeReceipt:{
-		original:{
+		Original:{
 			type:String
 		},
 		Photocopy:{
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -359,14 +362,14 @@ const DocumentSchema= new mongoose.Schema({
 		}
 	},
 	Other:{
-		original:{
+		Original:{
 			type:String
 		},
 		Photocopy:{
 			type:String
 		},
 		SubmitDate:{
-			type:Date
+			type:String
 		},
 		LastDate:{
 			type:String
@@ -377,4 +380,4 @@ const DocumentSchema= new mongoose.Schema({
 	}
 });
 
-module.exports = mongoose.model('document', DocumentSchema);
+module.exports = mongoose.model('Document', DocumentSchema);

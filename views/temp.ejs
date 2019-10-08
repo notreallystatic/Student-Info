@@ -1,0 +1,808 @@
+<% include partials/header %>
+<script>
+    //	function to set today's date in the submission date corresponding to the selected row
+    function setDate(user, val) {
+		console.log("inside setDate");
+        if (val[0] == 'Y') {
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById(user).value = today;
+        } else if (val[0] == 'I') {
+            user = user + "1";
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById(user).value = today;
+        } else {
+            document.getElementById(user).value = 1999;
+            var user1 = user + "1";
+            document.getElementById(user1).value = 1999;
+        }
+    }
+	
+	function startup() {
+		
+		let doc = <%- JSON.stringify(docs) %>
+			
+		
+		$(document).ready(() => {
+			for (var key in doc) {
+			if (doc.hasOwnProperty(key)) {
+				var vale = doc[key];
+				for(var t in vale){
+					if (vale.hasOwnProperty(t)) {
+						var val1 = vale[t];
+						console.log('#'+key+t);
+						$('#'+key+t).val(val1)
+					}
+				}
+			}
+		}
+		}
+		);
+	}
+			
+						 			// $('#course').val(student.Course); // To select the previous course
+			// $('#' + student.Course).val(student.Branch); // To select the previous branch
+			// $('#AllotmentCategory').val(student.AllotmentCategory); // To select the previous AllotmentCategory
+			// $('#AdmissionMode').val(student.AdmissionMode);
+			// $('#AdmissionYear').val(student.AdmissionYear);
+			// $('#' + student.Gender).prop("checked", true);
+
+</script>
+<script type="text/javascript" language="JavaScript">
+	startup();
+</script>
+<div class="container-fluid">
+    <h1>
+        Studnet Info here
+    </h1>
+</div>
+
+<div class="container">
+    <div class="container text-center mt-5">
+        <h1>
+            Edit Documents
+        </h1>
+    </div>
+    <form action="/submitDocuments/<%= id %>" method="POST">
+        <div class="container my-5">
+            <table class="table table-borderless">
+                <thead>
+                    <tr class="my-5">
+                        <th scope="col">Name</th>
+                        <th scope="col">Original Certificate</th>
+                        <th scope="col">Photocopy</th>
+                        <th scope="col">Submission Date</th>
+                        <th scope="col">Last Date</th>
+                        <th scope="col">Issue Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="align-middle font-weight-bold">X-Marksheet</td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('xmsd',this.value)" id="xmarksheetOriginal" name="xmarksheet[Original]" value='<%= docs["xmarksheet"]["Original"] %>'>
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('xmsd',this.value )" id="xmarksheetPhotocopy" name="xmarksheet[Photocopy]" value='<%= docs["xmarksheet"]["Photocopy"] %>'>
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' id="xmsd" class="form-control" onchange="collectData(id,value)" name="xmarksheet[SubmitDate]" value='<%= docs["xmarksheet"]["SubmitDate"] %>'> 
+                        </td>
+                        <td class=" "> 
+                            <input type='date' class="form-control" name="xmarksheet[LastDate]" value='<%= docs["xmarksheet"]["LastDate"] %>'>
+                        </td>
+                        <td class=" ">
+                            <input type="date" id="xmsd1" class="form-control" name="xmarksheet[IssueDate]" value='<%= docs["xmarksheet"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">XII-Marksheet</td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('xiimsd',this.value)" name="xiimarksheet[Original]" id="xiimarksheetOriginal" value='<%= docs["xiimarksheet"]["Original"] %>'>
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('xiimsd',this.value)" name="xiimarksheet[Photocopy]">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' id='xiimsd' class="form-control" name="xiimarksheet[SubmitDate]" value='<%= docs["xiimarksheet"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' class="form-control" name="xiimarksheet[LastDate]" value='<%= docs["xiimarksheet"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" id='xiimsd1' class="form-control" name="xiimarksheet[IssueDate]" value='<%= docs["xiimarksheet"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Diploma/B.Sc. Marksheet</td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('dmsd',this.value)" name="SemesterWise[Original]">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('dmsd',this.value)" name="SemesterWise[Photocopy]">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' id='dmsd' class="form-control" name="SemesterWise[SubmitDate]" value='<%= docs["SemesterWise"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' class="form-control" name="SemesterWise[LastDate]" value='<%= docs["SemesterWise"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" id='dmsd1' class="form-control" name="SemesterWise[IssueDate]" value='<%= docs["SemesterWise"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Provisional Certificate of Diploma/B.Sc.</td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('pcodsd',this.value)" name="Provisional[Original]">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('pcodsd',this.value)" name="Provisional[Photocopy]">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' id='pcodsd' class="form-control" name="Provisional[SubmitDate]" value='<%= docs["Provisional"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' class="form-control" name="Provisional[LastDate]" value='<%= docs["Provisional"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" id='pcodsd1' class="form-control" name="Provisional[IssueDate]" value='<%= docs["Provisional"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Migration Certificate</td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('mcsd',this.value)" name="Migration[Original]">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('mcsd',this.value)" name="Migration[Photocopy]">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' id='mcsd' class="form-control" name="Migration[SubmitDate]" value='<%= docs["Migration"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' class="form-control" name="Migration[LastDate]" value='<%= docs["Migration"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" id='mcsd1' class="form-control" name="Migration[IssueDate]" value='<%= docs["Migration"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Certificate of Reserved Category</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('corcsd',this.value)" name="ReservedCategory[Photocopy]">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' id='corcsd' class="form-control" name="ReservedCategory[SubmitDate]" value='<%= docs["ReservedCategory"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' class="form-control" name="ReservedCategory[LastDate]" value='<%= docs["ReservedCategory"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" id='corcsd1' class="form-control" name="ReservedCategory[IssueDate]" value='<%= docs["ReservedCategory"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Certificate of Kashmiri Migrants</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('cokmsd',this.value)" name="KashmiriMigrants[Photocopy]">
+                                <option value="n">Choose</option>
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' id='cokmsd' class="form-control" name="KashmiriMigrants[SubmitDate]" value='<%= docs["KashmiriMigrants"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' class="form-control" name="KashmiriMigrants[LastDate]" value='<%= docs["KashmiriMigrants"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" class="form-control" name="KashmiriMigrants[IssueDate]" value='<%= docs["KashmiriMigrants"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Certificate of PwD</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('copsd',this.value)" name="PersonWithDisability[Photocopy]">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' id='copsd' class="form-control" name="PersonWithDisability[SubmitDate]" value='<%= docs["PersonWithDisability"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' class="form-control" name="PersonWithDisability[IssueDate]" value='<%= docs["PersonWithDisability"]["IssueDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" id='copsd1' class="form-control" name="PersonWithDisability[LastDate]" value='<%= docs["PersonWithDisability"]["LastDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Certificate of Reserved EWS Category</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" onchange="setDate('corecsd',this.value)" name="EWSCategory[Photocopy]">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' id='corecsd' class="form-control" name="EWSCategory[SubmitDate]" value='<%= docs["EWSCategory"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' class="form-control" name="EWSCategory[LastDate]" value='<%= docs["EWSCategory"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" id='corecsd1' class="form-control" name="EWSCategory[IssueDate]" value='<%= docs["EWSCategory"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Aadhar Card</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="AadhaarCard[Photocopy]" onchange="setDate('acsd',this.value)">
+                                <option value="n">Choose</option>
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="AadhaarCard[SubmitDate]" id='acsd' class="form-control" value='<%= docs["AadhaarCard"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="AadhaarCard[LastDate]" class="form-control" value='<%= docs["AadhaarCard"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="AadhaarCard[IssueDate]" id='acsd1' class="form-control" value='<%= docs["AadhaarCard"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Transfer Certificate(Regular Degree)</td>
+                        <td class=" ">
+                            <select class="form-control" name="TransferCertificate[Original]" onchange="setDate('tcrdsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="TransferCertificate[Photocopy]" onchange="setDate('tcrdsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="TransferCertificate[SubmitDate]" id='tcrdsd' class="form-control" value='<%= docs["TransferCertificate"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="TransferCertificate[LastDate]" class="form-control" value='<%= docs["TransferCertificate"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="TransferCertificate[IssueDate]" id='tcrdsd1' class="form-control" value='<%= docs["TransferCertificate"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Character Certificate(Regular Degree)</td>
+                        <td class=" ">
+                            <select class="form-control" name="CharacterCertificate[Original]" onchange="setDate('ccrdsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="CharacterCertificate[Photocopy]" onchange="setDate('ccrdsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="CharacterCertificate[SubmitDate]" id='ccrdsd' class="form-control" value='<%= docs["CharacterCertificate"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="CharacterCertificate[LastDate]" class="form-control" value='<%= docs["CharacterCertificate"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="CharacterCertificate[IssueDate]" id='ccrdsd1' class="form-control" value='<%= docs["CharacterCertificate"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Domicile Certificate</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="DomicileCertificate[Photocopy]" onchange="setDate('dcsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="DomicileCertificate[SubmitDate]" id='dcsd' class="form-control" value='<%= docs["DomicileCertificate"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="DomicileCertificate[LastDate]" class="form-control" value='<%= docs["DomicileCertificate"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="DomicileCertificate[IssueDate]" id='dcsd1' class="form-control" value='<%= docs["DomicileCertificate"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">LEEP Application-cum-Option Form</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="LEEPApplication[Photocopy]" onchange="setDate('lafsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="LEEPApplication[SubmitDate]" id='lafsd' class="form-control" value='<%= docs["LEEPApplication"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="LEEPApplication[LastDate]" class="form-control" value='<%= docs["LEEPApplication"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="LEEPApplication[IssueDate]" id='lafsd1' class="form-control" value='<%= docs["LEEPApplication"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">LEEP Seat Allotment Letter</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="LEEPAllotment[Photocopy]" onchange="setDate('lsalsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="LEEPAllotment[SubmitDate]" id='lsalsd' class="form-control" value='<%= docs["LEEPAllotment"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="LEEPAllotment[LastDate]" class="form-control" value='<%= docs["LEEPAllotment"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="LEEPAllotment[IssueDate]" id='lsalsd1' class="form-control" value='<%= docs["LEEPAllotment"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">LEEP Medical Fitness Certificate</td>
+                        <td class=" ">
+                            <select class="form-control" name="MedicalCertificate[Original]" onchange="setDate('lmfcsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="MedicalCertificate[Photocopy]" onchange="setDate('lmfcsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="MedicalCertificate[SubmitDate]" id='lmfcsd' class="form-control" value='<%= docs["MedicalCertificate"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="MedicalCertificate[LastDate]" class="form-control" value='<%= docs["MedicalCertificate"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="MedicalCertificate[IssueDate]" id='lmfcsd1' class="form-control" value='<%= docs["MedicalCertificate"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">LEEP Merit Card</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="MeritCard[Photocopy]" onchange="setDate('lmcsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="MeritCard[SubmitDate]" id='lmcsd' class="form-control" value='<%= docs["MeritCard"]["SubmitDate"] %>'>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="MeritCard[LastDate]" class="form-control" value='<%= docs["MeritCard"]["LastDate"] %>'>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="MeritCard[IssueDate]" id='lmcsd1' class="form-control" value='<%= docs["MeritCard"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Anti Ragging Affidavit by Student</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="AntiRaggingStudent[Photocopy]" onchange="setDate('arabssd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="AntiRaggingStudent[SubmitDate]" id='arabssd' class="form-control" value='<%= docs["AntiRaggingStudent"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="AntiRaggingStudent[LastDate]" class="form-control" value='<%= docs["AntiRaggingStudent"]["LastDate"] %>'>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="AntiRaggingStudent[IssueDate]" id='arabssd' class="form-control" value='<%= docs["AntiRaggingStudent"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Anti Raggin Affidavit by Parent(s)</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="AntiRaggingParent[Photocopy]" onchange="setDate('arabpsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="AntiRaggingParent[SubmitDate]" id='arabpsd' class="form-control" value='<%= docs["AntiRaggingParent"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="AntiRaggingParent[LastDate]" class="form-control" value='<%= docs["AntiRaggingParent"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="AntiRaggingParent[IssueDate]" id='arabpsd1' class="form-control" value='<%= docs["AntiRaggingParent"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Passport-size Colored Photographs</td>
+                        <td class=" ">
+                            <select class="form-control" name="Photograph[Original]" onchange="setDate('pscpsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="Photograph[Photocopy]" onchange="setDate('pscpsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="Photograph[SubmitDate]" id='pscpsd' class="form-control" value='<%= docs["Photograph"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="Photograph[LastDate]" class="form-control" value='<%= docs["Photograph"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="Photograph[IssueDate]" id='pscpsd1' class="form-control" value='<%= docs["Photograph"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Income Certificate by Parent(s)</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="IncomeCertificate[Photocopy]" onchange="setDate('icbpsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="IncomeCertificate[SubmitDate]" id='icbpsd' class="form-control" value='<%= docs["IncomeCertificate"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="IncomeCertificate[LastDate]" class="form-control" value='<%= docs["IncomeCertificate"]["LastDate"] %>'>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="IncomeCertificate[IssueDate]" id='icbpsd1' class="form-control" value='<%= docs["IncomeCertificate"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">LEEP Upward Seat Allotment Letter</td>
+                        <td class=" ">
+                            <input type="text" readonly class="form-control-plaintext text-center font-weight-bold" value="NA">
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="LEEPUpwards[Photocopy]" onchange="setDate('lusalsd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="LEEPUpwards[SubmitDate]" id='lusalsd' class="form-control" value='<%= docs["LEEPUpwards"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="LEEPUpwards[LastDate]" class="form-control" value='<%= docs["LEEPUpwards"]["LastDate"] %>'>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="LEEPUpwards[IssueDate]" id='lusalsd1' class="form-control" value='<%= docs["LEEPUpwards"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Fee Receipt of earlier College Allotment</td>
+                        <td class=" ">
+                            <select class="form-control" name="FeeReceipt[Original]" onchange="setDate('froecasd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <select class="form-control" name="FeeReceipt[Photocopy]" onchange="setDate('froecasd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="FeeReceipt[SubmitDate]" id='froecasd' class="form-control" value='<%= docs["FeeReceipt"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type='date' name="FeeReceipt[LastDate]" class="form-control" value='<%= docs["FeeReceipt"]["LastDate"] %>'/>
+                        </td>
+                        <td class=" ">
+                            <input type="date" name="FeeReceipt[IssueDate]" id='froecasd1' class="form-control" value='<%= docs["FeeReceipt"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle font-weight-bold">Other</td>
+                        <td class="py-4">
+                            <select class="form-control" name="Other[Original]" onchange="setDate('othersd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class="py-4">
+                            <select class="form-control" name="Other[Photocopy]" onchange="setDate('othersd',this.value)">
+                                <option value="Choose">Choose</option>
+                                <option value="Yes(1)">Yes(1)</option>
+                                <option value="Yes(2)"> Yes(2)</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Issued(1)">Issued(1)</option>
+                                <option value="Issued(2)">Issued(2)</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </td>
+                        <td class="py-4">
+                            <input type='date' name="Other[SubmitDate]" id='othersd' class="form-control" value='<%= docs["Other"]["SubmitDate"] %>'/>
+                        </td>
+                        <td class="py-4">
+                            <input type='date' name="Other[LastDate]" class="form-control" value='<%= docs["Other"]["LastDate"] %>'/>
+                        </td>
+                        <td class="py-4">
+                            <input type="date" name="Other[IssueDate]" id='othersd1' class="form-control" value='<%= docs["Other"]["IssueDate"] %>'>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary w-50 d-block mx-auto">Submit</button>
+        </div>
+    </form>
+</div>
+<% include partials/footer %>

@@ -1,259 +1,241 @@
-<html>
-	<head>
-		<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-		<script>
-			function funToggle(val)
-			{
-				if(val == "BTech")
-				{
-					$('#MTech').addClass('d-none');
-					$('#MBA').addClass('d-none')
-					$('#BTech').removeClass('d-none');
-				}
-				else if(val == "MTech")
-				{
-					$('#BTech').addClass('d-none');
-					$('#MBA').addClass('d-none')
-					$('#MTech').removeClass('d-none');
-				}
-				else if(val == "MBA")
-				{
-					$('#MTech').addClass('d-none');
-					$('#BTech').addClass('d-none')
-					$('#MBA').removeClass('d-none');
-				}
-			}
+<% include partials/header %>
+<script>
+	function funToggle(val)
+	{
+		if(val == "BTech")
+		{
+			$('#MTech').addClass('d-none');
+			$('#MBA').addClass('d-none')
+			$('#BTech').removeClass('d-none');
+		}
+		else if(val == "MTech")
+		{
+			$('#BTech').addClass('d-none');
+			$('#MBA').addClass('d-none')
+			$('#MTech').removeClass('d-none');
+		}
+		else if(val == "MBA")
+		{
+			$('#MTech').addClass('d-none');
+			$('#BTech').addClass('d-none')
+			$('#MBA').removeClass('d-none');
+		}
+	}
 			
 			// for(let i = 0; i < year.options.length; i++) {
 			// 	if (year.options[i].text == student.AdmissionYear)
 			// 		year.options[i].selected = true;
-			// }
-			
-		</script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<title>Student Info</title>
-	</head>
-	<body>
-		<nav class="navbar bg-dark">
-			<a class="navbar-brand text-light" href='/'>Home</a>
-		</nav>
+			// }			
+</script>
+<div class="container-fluid">
 
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800 text-center">Add Student</h1>
 
-		<div class="container">
-			<div class="container text-center mt-5">
-				<h1>
-					Add a new Student
-				</h1>
-			</div>
+    <form action="/addStudent" method="POST">
+        <div class="container my-5">
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Registration No</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" name="RegnNo" placeholder="Registration No">
+                    </div>
+                </div>
+            </div>
 
-			<form action="/addStudent" method="POST">
-				<div class="container my-5">
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Registration No</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" name="RegnNo" placeholder="Registration No">
-							</div>
-						</div>
-					</div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Aadhar No</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" name="AadhaarNo" placeholder="Aadhar No">
+                    </div>
+                </div>
+            </div>
 
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Aadhar No</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" name="AadhaarNo" placeholder="Aadhar No">
-							</div>
-						</div>
-					</div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Student's Name</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" name="Name" placeholder="Student's Name">
+                    </div>
+                </div>
+            </div>
 
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Student's Name</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" name="Name" placeholder="Student's Name">
-							</div>
-						</div>
-					</div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Father's Name</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" name="Fname" placeholder="Father's Name">
+                    </div>
+                </div>
+            </div>
 
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Father's Name</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" name="Fname" placeholder="Father's Name">
-							</div>
-						</div>
-					</div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Gender</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
 
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Gender</label>
-							</div>
-							<div class="col col-md-6 mx-5">
+                        <div class="row justify-content-start px-4">
+                            <div class="col col-md-4">
+                                <input class="form-check-input" type="radio" name="Gender" id="male" value="Male">
+                                <label class="">Male</label>
+                            </div>
+                            <div class="col col-md-4">
+                                <input class="form-check-input" type="radio" id="female" name="Gender" value="Female">
+                                <label class="">Female</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Admission Year</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <select class="form-control w-75" id="AdmissionYear" name="AdmissionYear">
+                            <option>2018-2019</option>
+                            <option>2019-2020</option>
+                            <option>2020-2021</option>
+                            <option>2021-2022</option>
+                            <option>2022-2023</option>
+                            <option>2023-2024</option>
+                            <option>2024-2025</option>
+                            <option>2025-2026</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-								<div class="row justify-content-start px-4">
-									<div class="col col-md-4">
-										<input class="form-check-input" type="radio"  name="Gender" id="male" value="Male">
-										<label class="">Male</label>
-									</div>
-									<div class="col col-md-4">
-										<input class="form-check-input" type="radio"  id="female" name="Gender" value="Female">
-										<label class="">Female</label>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Admission Year</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<select class="form-control w-75" id="AdmissionYear" name="AdmissionYear">
-									<option>2018-2019</option>
-									<option>2019-2020</option>
-									<option>2020-2021</option>
-									<option>2021-2022</option>
-									<option>2022-2023</option>
-									<option>2023-2024</option>
-									<option>2024-2025</option>
-									<option>2025-2026</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Course</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<select class="form-control w-75" id="course" onchange="funToggle(this.value)" name="Course">
-									<option value="BTech" selected>BTech</option>
-									<option value="MTech">MTech</option>
-									<option value="MBA">MBA</option>
-								</select>
-							</div>
-						</div>
-					</div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Course</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <select class="form-control w-75" id="course" onchange="funToggle(this.value)" name="Course">
+                            <option value="BTech" selected>BTech</option>
+                            <option value="MTech">MTech</option>
+                            <option value="MBA">MBA</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Branch</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<select class="form-control w-75" id="BTech" name="Branch">
-									<option>CS</option>
-									<option>IT</option>
-									<option>ECE</option>
-									<option>ME</option>
-									<option>EE</option>
-									<option>CE</option>
-								</select>
-								<select class="form-control w-75 d-none" id="MTech" name="Branch">
-									<option>CS</option>
-									<option>PS</option>
-									<option>DC</option>
-									<option>VLSI</option>
-									<option>PE</option>
-									<option>RET</option>
-									<option>TE</option>
-								</select>
-								<select class="form-control w-75 d-none" id="MBA" name="Branch" >
-									<option>MBA</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Allotment Category</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<select class="form-control w-75" id="AllotmentCategory" name="AllotmentCategory">
-									<option>SFS</option>
-									<option>EWS</option>
-									<option>TFWS</option>
-									<option>KM</option>
-									<option>PMSSS</option>
-								</select>
-							</div>
-						</div>
-					</div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Branch</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <select class="form-control w-75" id="BTech" name="Branch">
+                            <option>CS</option>
+                            <option>IT</option>
+                            <option>ECE</option>
+                            <option>ME</option>
+                            <option>EE</option>
+                            <option>CE</option>
+                        </select>
+                        <select class="form-control w-75 d-none" id="MTech" name="Branch">
+                            <option>CS</option>
+                            <option>PS</option>
+                            <option>DC</option>
+                            <option>VLSI</option>
+                            <option>PE</option>
+                            <option>RET</option>
+                            <option>TE</option>
+                        </select>
+                        <select class="form-control w-75 d-none" id="MBA" name="Branch">
+                            <option>MBA</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Allotment Category</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <select class="form-control w-75" id="AllotmentCategory" name="AllotmentCategory">
+                            <option>SFS</option>
+                            <option>EWS</option>
+                            <option>TFWS</option>
+                            <option>KM</option>
+                            <option>PMSSS</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Admission Mode</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<select class="form-control w-75" id="AdmissionMode" name="AdmissionMode">
-									<option>REAP</option>
-									<option>CAM</option>
-									<option>LEEP</option>
-								</select>
-							</div>
-						</div>
-					</div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Admission Mode</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <select class="form-control w-75" id="AdmissionMode" name="AdmissionMode">
+                            <option>REAP</option>
+                            <option>CAM</option>
+                            <option>LEEP</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Contact No. 1</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" placeholder="Contact No. 1" name="Contact1">
-							</div>
-						</div>
-					</div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Contact No. 1</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" placeholder="Contact No. 1" name="Contact1">
+                    </div>
+                </div>
+            </div>
 
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">Contact No. 2</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<input type="text" class="form-control w-75" placeholder="Contact No. 2" name="Contact2" name=>
-							</div>
-						</div>
-					</div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Contact No. 2</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" placeholder="Contact No. 2" name="Contact2" name=>
+                    </div>
+                </div>
+            </div>
 
-					<div class="container form-group">
-						<div class="row form-group justify-content-end">
-							<div class="col col-md-2 mx-5">
-								<label class="font-weight-bold ">E-mail</label>
-							</div>
-							<div class="col col-md-6 mx-5">
-								<input type="email" class="form-control w-75" placeholder="E-mail" name="Email">
-							</div>
-						</div>
-					</div>
+            <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">E-mail</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="email" class="form-control w-75" placeholder="E-mail" name="Email">
+                    </div>
+                </div>
+            </div>
 
-					<div class="container form-group">
-						<div class="row form-group">
-							<div class="col-md-12 text-center">
-								<button type="submit" class="btn btn-primary mb-2 px-auto">Submit</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-	</body>	
-</html>
+            <div class="container form-group">
+                <div class="row form-group">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary mb-2 px-auto">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- /.container-fluid -->
+<% include partials/footer %>

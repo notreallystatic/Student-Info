@@ -16,4 +16,4 @@ const StudentSchema = new mongoose.Schema({
 	Email:String
 });
 
-module.exports = mongoose.model('student', StudentSchema);
+module.exports = mongoose.model('Student', StudentSchema);

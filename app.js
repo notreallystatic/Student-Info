@@ -3,13 +3,16 @@ const express			= require('express'),
 	  mongoose			= require('mongoose'),
 	  bodyParser		= require('body-parser'),
 	  Student			= require('./models/student'),
-	  Documents			= require('./models/document');
+	  Documents			= require('./models/document'),
+	  path				= require('path');
 
 mongoose.connect('mongodb://localhost:27017/Student-info', {useNewUrlParser: true},function(error) {});
 
+// app.use(express.static(path.join(/partials,"public")));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
-app.use(express.static('public'));
+app.use(express.static('./views'));
+app.use(express.static(__dirname + "/public"));
 // LOGIN ROUTE
 app.get('/login', (req, res) => {
 	res.render('login');
@@ -37,8 +40,8 @@ app.get('/addStudent', (req, res) => {
 	res.render('addStudent');
 })
 
-app.get('/students',function(req,res){
-	Student.find({},function(err, docs){
+app.get('/students', (req,res) => {
+	Student.find({}, (err, docs) =>{
 		if(err) {
 			cnosole.log(err);
 		} else {
@@ -49,10 +52,9 @@ app.get('/students',function(req,res){
 
 // Post route to add a new Student to our DB
 app.post('/addStudent', (req, res) => {
-	let student = new Student();
-	student = req.body;
-	//console.log(req.body.Branch);
+	let student = new Student(req.body);
 	
+	//console.log(req.body.Branch);
 	if (req.body.Course === "BTech"){
 		student.Branch =req.body.Branch[0];
 	}
@@ -63,6 +65,7 @@ app.post('/addStudent', (req, res) => {
 	else{
 			student.Branch = req.body.Branch[2];
 	}
+	console.log(student);
 	student.save();
 	
 	res.send("Student post route");
@@ -103,6 +106,7 @@ app.post('/edit/:id', (req, res) => {
 	let student = req.body;
 	if (req.body.Course === "BTech"){
 		student.Branch =req.body.Branch[0];
+		
 	}
 
 	else if (req.body.Course === "MTech"){
@@ -119,30 +123,74 @@ app.post('/edit/:id', (req, res) => {
 		}
 	});
 });
-
-
 // Submit Document Route
 // This route will allow the admin to Submit Documents of a Student, either by searching a Student using his id or by selecting one from the given table.
-app.get('/submitDocument', (req, res) => {
-	Student.find({},function(err, data){
+app.get('/submitDocuments', (req, res) => {
+	Student.find({}, (err, data) => {
 		if (err) {
 			console.log(err);
 		}	else {
-			res.render('submitDocument', {students: data});
+			res.render('submitDocuments', {students: data});
 		}
  	});
 });
 
-app.post('/submitDocument/searchById', (req, res) => {
-	res.redirect('/submitDocument/' + req.body.id);
+app.post('/submitDocuments/searchById', (req, res) => {
+	res.redirect('/submitDocuments/' + req.body.id);
 })
 
 // This route will take the admin to submit the documents of the selected/searched student.
-app.get('/submitDocument/:id', (req, res) => {
-	res.render('submitDocumentID', {id: req.params.id});
+app.get('/submitDocuments/:id', (req, res) => {
+	
+	Documents.findOne({"StudentID": req.params.id}, (err, document) => {
+		if (err) {
+			res.redirect('/');
+		} else {
+			if(document){
+			// Creating a temp.ejs file to get the value of document already stored in the DB..
+				res.render('temp', {docs: document,id:req.params.id});
+			}
+			else{
+				res.render('submitDocumentsID', {document: {}, id:req.params.id});
+			}
+		}
+	});
 })
-app.post('/submitDocument/:id', (req, res) => {
+
+app.post('/submitDocuments/:id', (req, res) => {
+//	let document  = new Documents(req.body);
+//	console.log(document);
+//	document.StudentID = req.params.id;
+	let newDocument = req.body;
+	
+	//let obj = JSON.parse(newDocument);
+	//console.log(typeof(newDocument));
+	
+	function walk(obj) {
+		for (var key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				var val = obj[key];
+				for(var t in val){
+					if (val.hasOwnProperty(t)) {
+						var val1 = val[t];
+						if (val1=="Pending"){
+							newDocument.Status="true";
+						}
+					}
+				}
+			}
+		}
+	}
+	walk(newDocument);
+	newDocument.StudentID=req.params.id;
+	let finald= new Documents(newDocument);
+	finald.save();
 	res.redirect('/');
+})
+
+// Pending Documents Route
+app.get('/pendingDocuments', (req, res) => {
+	res.render('/pendingDocuments');
 })
 
 
