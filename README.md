@@ -15,6 +15,6 @@ In the backend, we have used Node JS, Express JS, MonogDB.
 3. We used "xlsx-to-json" to convert an excel file into a JSON object(https://www.npmjs.com/package/xlsx-to-json).
 4. And to add authetication in our web-app we used Passport JS(http://www.passportjs.org/).
 
-### *Contributors
-Himanshu Modi : https://github.com/Himanshu-Modi
+### *Contributors*
+Himanshu Modi : https://github.com/Himanshu-Modi<br/>
 Sachin Kumar : https://github.com/sk92907
