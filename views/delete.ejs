@@ -1,0 +1,55 @@
+<% include partials/header %>
+<!-- 	Form to Search for a Student using student id	 -->
+<script>
+	$(document).ready( function () {
+    	$('#dataTable').DataTable();
+	});
+</script>
+<div class="container-fluid">
+    <form class="form-inline row mx-5" method="POST" action="/edit">
+        <div class="form-group mb-2 col-md-4 justify-content-end">
+            <label class="font-weight-bold mx-auto">Student Id</label>
+        </div>
+        <div class="form-group mx-sm-3 mb-2 col-md-4 justify-content-end">
+            <input type="text" class="form-control mx-auto" name="id" placeholder="student id">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2 col-md-3 justify-content-end">Confirm</button>
+    </form>
+</div>
+<!-- Details of Students which are stored in the DB -->
+<hr style="border-width: 5px !important;">
+<div class="container-fluid">
+    <table class="table table-striped display" id="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">Regn No</th>
+	            <th scope="col">Name</th>
+                <th scope="col">Branch</th>
+                <th scope="col">Year</th>
+                <th scope="col" class="px-auto">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% students.forEach((student) => { %>
+                <tr>
+                    <th scope="row">
+                        <%= student.RegnNo %>
+                    </th>
+                    <td>
+                        <%= student.Name %>
+                    </td>
+                    <td>
+                        <%= student.Branch %>
+                    </td>
+                    <td>
+                        <%= student.AdmissionYear %>
+                    </td>
+                    <td class="px-auto">
+                        <a href="/delete/<%= student.RegnNo %>" class="btn btn-danger btn-sm w-50 mx-auto">Delete</a>
+                    </td>
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+</div>
+<% include partials/footer %>

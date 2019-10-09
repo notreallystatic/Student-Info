@@ -1,19 +1,13 @@
 <% include partials/header %>
 <!-- 	Form to Search for a Student using student id	 -->
-<div class="container-fluid">
-    <form class="form-inline row mx-5" method="POST" action="/edit">
-        <div class="form-group mb-2 col-md-4 justify-content-end">
-            <label class="font-weight-bold mx-auto">Student Id</label>
-        </div>
-        <div class="form-group mx-sm-3 mb-2 col-md-4 justify-content-end">
-            <input type="text" class="form-control mx-auto" name="id" placeholder="student id">
-        </div>
-        <button type="submit" class="btn btn-primary mb-2 col-md-3 justify-content-end">Confirm</button>
-    </form>
-</div>
+<script>
+	$(document).ready( function () {
+    	$('#dataTable').DataTable();
+	});
+</script>
 <!-- Details of Students which are stored in the DB -->
 <div class="container-fluid">
-    <table class="table table-striped">
+    <table class="table table-striped display" id="dataTable">
         <thead>
             <tr>
                 <th scope="col">Regn No</th>

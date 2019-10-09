@@ -28,10 +28,23 @@
 			// }			
 </script>
 <div class="container-fluid">
-
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800 text-center">Add Student</h1>
-
+    <h1 class="mb-4 text-gray-800 text-center">Add Student</h1>
+	<hr class="border border-dark my-4" style="border">
+	<div class="container-fluid">
+		<form action='/addStudentFile'  enctype = "multipart/form-data" method=POST>
+			<h2 class="text-center text-gray-600">Import using Excel File</h2>
+			<div class="container-fluid row   d-flex justify-content-center">
+				<div class="col-md-4">
+					<input type="file" name="file" class="form-control-file mx-5">	
+				</div>
+				<div class="col-md-4">
+					<button class="btn btn-dark border border-light w-75" type="submit">Upload</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<hr class="border border-dark my-4" style="border">
     <form action="/addStudent" method="POST">
         <div class="container my-5">
             <div class="container form-group">

@@ -1,0 +1,42 @@
+<% include partials/header %>
+<script>
+	$(document).ready( function () {
+    	$('#dataTable').DataTable();
+	});
+</script>
+<div class="container-fluid">
+	<table class="table table-striped display" id="dataTable">
+        <thead>
+            <tr>
+                <th scope="col">Regn No</th>
+                <th scope="col">Name</th>
+                <th scope="col">Branch</th>
+                <th scope="col">Year</th>
+                <th scope="col" class="px-auto">Pending</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% students.forEach((student) => { %>
+                <tr>
+                    <th scope="row">
+                        <%= student.RegnNo %>
+                    </th>
+                    <td>
+                        <%= student.Name %>
+                    </td>
+                    <td>
+                        <%= student.Branch %>
+                    </td>
+                    <td>
+                        <%= student.AdmissionYear %>
+                    </td>
+                    <td class="px-auto">
+                        <a href="/submitDocuments/<%= student.RegnNo %>" class="btn btn-warning btn-sm w-50 mx-auto">Edit</a>
+                    </td>
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<% include partials/footer %>

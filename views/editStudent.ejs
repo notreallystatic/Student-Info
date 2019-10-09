@@ -41,12 +41,7 @@
 </script>
 <div class="container-fluid">
 
-    <div class="container text-center mt-5">
-        <h1>
-            Edit Student
-            <%= student.Name %>
-        </h1>
-    </div>
+   
     <!-- After the submission of this form, user will be redirected to another webpage. During the process, all the previous values of the selected 'student' will be over-written by the new values. -->
     <form action="/edit/<%=student._id%>" method="POST">
         <div class="container my-5">

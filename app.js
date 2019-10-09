@@ -4,6 +4,9 @@ const express			= require('express'),
 	  bodyParser		= require('body-parser'),
 	  Student			= require('./models/student'),
 	  Documents			= require('./models/document'),
+	  multer			=require('multer'),
+	  xlstojson         = require("xls-to-json-lc"),
+      xlsxtojson        = require("xlsx-to-json-lc"),
 	  path				= require('path');
 
 mongoose.connect('mongodb://localhost:27017/Student-info', {useNewUrlParser: true},function(error) {});
@@ -13,6 +16,24 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static('./views'));
 app.use(express.static(__dirname + "/public"));
+
+    var storage = multer.diskStorage({ //multers disk storage settings
+        destination:'./uploads',
+        filename: function (req, file, cb) {
+            var datetimestamp = Date.now();
+            cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+        }
+    });
+
+    var upload = multer({ //multer settings
+                    storage: storage,
+                    fileFilter : function(req, file, callback) { //file filter
+                        if (['xls', 'xlsx'].indexOf(file.originalname.split('.')[file.originalname.split('.').length-1]) === -1) {
+                            return callback(new Error('Wrong extension type'));
+                        }
+                        callback(null, true);
+                    }
+                }).single('file');
 // LOGIN ROUTE
 app.get('/login', (req, res) => {
 	res.render('login');
@@ -22,12 +43,6 @@ app.get('/login', (req, res) => {
 app.get('/', (req, res) => {
 	res.render('index');
 });
-
-// SHOW ROUTE
-app.get('/show', (req, res) => {
-	res.render('findStudent');
-});
-
 app.post('/show', (req, res) => {
 	//Fetch the Student ID and show the coresponding details
 	let id = req.body.id;
@@ -67,9 +82,61 @@ app.post('/addStudent', (req, res) => {
 	}
 	console.log(student);
 	student.save();
-	
-	res.send("Student post route");
+	res.redirect("/");
 });
+
+app.post('/addStudentFile',(req,res)=>{
+ var exceltojson;
+        upload(req,res,function(err){
+            if(err){
+			
+                 res.json({error_code:1,err_desc:err});
+                 return;
+            }
+            /** Multer gives us file info in req.file object */
+            if(!req.file){
+                res.json({error_code:1,err_desc:"No file passed"});
+                return;
+            }
+            /** Check the extension of the incoming file and
+             *  use the appropriate module
+             */
+            if(req.file.originalname.split('.')[req.file.originalname.split('.').length-1] === 'xlsx'){
+                exceltojson = xlsxtojson;
+            } else {
+                exceltojson = xlstojson;
+            }
+            try {
+                exceltojson({
+                    input: req.file.path,
+                    output: null, //since we don't need output.json
+                    
+                }, function(err,result){
+                    if(err) {
+                      res.redirect("/addStudent");
+                    }
+                    
+                    for(var i = 0; i < result.length; i++) {
+                       var obj = result[i];
+						var st= new Student(obj);
+						st.save();
+                        
+                      
+                        console.log(obj);
+                    }
+
+
+                   res.redirect("/");
+
+
+
+                });
+
+            } catch (e){
+                res.json({error_code:1,err_desc:"Corupted excel file"});
+            }
+        })
+    });
 
 
 // Edit Student Route
@@ -82,7 +149,7 @@ app.get('/edit', (req, res) => {
 		}	else {
 			res.render('edit', {students: data});
 		}
-  });
+  	});
 });
 
 app.post('/edit', (req, res) => {
@@ -137,21 +204,36 @@ app.get('/submitDocuments', (req, res) => {
 
 app.post('/submitDocuments/searchById', (req, res) => {
 	res.redirect('/submitDocuments/' + req.body.id);
-})
+});
 
 // This route will take the admin to submit the documents of the selected/searched student.
 app.get('/submitDocuments/:id', (req, res) => {
 	
-	Documents.findOne({"StudentID": req.params.id}, (err, document) => {
+	let id = req.params.id;
+	Documents.findOne({"StudentID": id}, (err, document) => {
 		if (err) {
 			res.redirect('/');
 		} else {
 			if(document){
-			// Creating a temp.ejs file to get the value of document already stored in the DB..
-				res.render('temp', {docs: document,id:req.params.id});
+				Student.findOne({"RegnNo": id}, (err, student) => {
+					if (err) {
+						res.redirect("/submitDocuments");
+					} else {
+						res.render('submitDocumentsID', {docs: document,id: id, student: student});	
+					}
+				});
 			}
 			else{
-				res.render('submitDocumentsID', {document: {}, id:req.params.id});
+				Student.findOne({"RegnNo": id}, (err, student) => {
+					if (err) {
+						res.redirect("/submitDocuments");
+					} else {
+						let newdocs= new Documents();
+						newdocs.StudentID = id;
+						newdocs.save();
+						res.render('submitDocumentsID', {docs: newdocs, id: id, student: student});	
+					}
+				});
 			}
 		}
 	});
@@ -162,10 +244,9 @@ app.post('/submitDocuments/:id', (req, res) => {
 //	console.log(document);
 //	document.StudentID = req.params.id;
 	let newDocument = req.body;
-	
-	//let obj = JSON.parse(newDocument);
-	//console.log(typeof(newDocument));
-	
+	newDocument.Status="false";
+	let id = req.params.id;
+	// To set the value of Status. True if any of the documents has a pending state, else false..
 	function walk(obj) {
 		for (var key in obj) {
 			if (obj.hasOwnProperty(key)) {
@@ -182,15 +263,135 @@ app.post('/submitDocuments/:id', (req, res) => {
 		}
 	}
 	walk(newDocument);
-	newDocument.StudentID=req.params.id;
-	let finald= new Documents(newDocument);
-	finald.save();
-	res.redirect('/');
+	newDocument.StudentID= id;
+	//console.log(newDocument);
+	
+	 if (newDocument.Status=="true"){
+		
+		Student.findOne({"RegnNo": id}, (err, student) => {
+			if (err) {
+			} else {
+				student.Status = "true";
+				Student.findOneAndUpdate({"RegnNo": id},  student, (err, finalStudent) => {
+					if (err) {
+						console.log(err);
+						
+					
+					} else {
+						
+					
+					}
+				});
+			}
+		});
+	}
+	
+	else{
+			Student.findOne({"RegnNo": id}, (err, student) => {
+			if (err) {
+			} else {
+				student.Status = "false";
+				Student.findOneAndUpdate({"RegnNo": id},  student, (err, finalStudent) => {
+					if (err) {
+						console.log(err);
+						
+					
+					} else {
+						
+					
+					}
+				});
+			}
+		});
+	}
+	Documents.findOneAndUpdate({"StudentID": id}, newDocument ,(err, newDocument) => {
+		if(err){
+			res.redirect('/submitDocuments');
+		}
+		else{
+			res.redirect('/');
+		}
+	});
 })
-
 // Pending Documents Route
 app.get('/pendingDocuments', (req, res) => {
-	res.render('/pendingDocuments');
+	Student.find({"Status": "true"}, (err, students) => {
+		if (err) {
+			res.redirect('/');
+		} else {
+			res.render('pendingDocuments', {students: students});	
+		}
+	});
+})
+// Issue Documents Route
+app.get('/issueDocuments', (req, res) => {
+	Student.find({}, (err, students) => {
+		if (err) {
+			console.log(err);
+		}	else {
+			res.render('issueDocuments', {students: students});
+		}
+ 	});
+})
+// View Documents
+app.get('/viewDocuments', (req, res) => {
+	Student.find({}, (err, student) => {
+		if (err) {
+			console.log(err);
+		} else {
+			res.render('viewDocuments', {students: student});
+		}
+	})
+})
+app.get('/viewDocuments/:id', (req, res) => {
+	let id = req.params.id;
+	Documents.findOne({"StudentID": id}, (err, document) => {
+		if (err) {
+			res.redirect('/');
+		} else {
+			if(document){
+				Student.findOne({"RegnNo": id}, (err, student) => {
+					if (err) {
+						res.redirect("/viewDocuments");
+					} else {
+						res.render('viewDocumentsID', {docs: document,id: id, student: student});	
+					}
+				});
+			}
+			else{
+				Student.findOne({"RegnNo": id}, (err, student) => {
+					if (err) {
+						res.redirect("/viewDocuments");
+					} else {
+						let newdocs= new Documents();
+						newdocs.StudentID = id;
+						newdocs.save();
+						res.render('viewDocumentsID', {docs: newdocs, id: id, student: student});	
+					}
+				});
+			}
+		}
+	});
+})
+// Delete Route
+app.get('/delete', (req, res) => {
+	Student.find({}, function(err, data){
+		if (err) {
+			console.log(err);
+		} else {
+			res.render('delete', {students: data});
+		}
+  	});
+})
+app.get('/delete/:id', (req, res) => {
+	let id = req.params.id;
+	Student.remove({"RegnNo" : id},function(err){
+		console.log(err);
+	});
+	Documents.remove({"StudentID" : id},function(err){
+		console.log(err);
+	});
+	res.redirect("/delete");
 })
 
 

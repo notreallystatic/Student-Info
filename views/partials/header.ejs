@@ -10,6 +10,15 @@
     <meta name="author" content="">
 
     <title>Admin</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.0/js/buttons.print.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.dataTables.min.css">	
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+  
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
 
     <!-- Custom fonts for this template-->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -41,7 +50,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="\">
+                <a class="nav-link" href="/">
                     <i class="fas fa-home"></i>
                     <span>Home</span>
                 </a>
@@ -58,19 +67,19 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="\addStudent">
+                <a class="nav-link" href="/addStudent">
                     <i class="fas fa-plus-square"></i>
                     <span>Add Student</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="\edit">
+                <a class="nav-link" href="/edit">
                     <i class="fas fa-edit"></i>
                     <span>Edit Student</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="\">
+                <a class="nav-link" href="/delete">
                     <i class="fas fa-user-times"></i>
                     <span>Delete Student</span>
                 </a>
@@ -85,19 +94,19 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="\submitDocuments">
+                <a class="nav-link" href="/submitDocuments">
                     <i class="fas fa-sign-in-alt"></i>
                     <span>Submit Documents</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="\">
+                <a class="nav-link" href="/issueDocuments">
                     <i class="fas fa-external-link-square-alt"></i>
                     <span>Issue Documents</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="\">
+                <a class="nav-link" href="/viewDocuments">
                     <i class="fas fa-search"></i>
                     <span>View Documents</span>
                 </a>

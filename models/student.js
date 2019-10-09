@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const StudentSchema = new mongoose.Schema({
-	RegnNo: String ,
+	RegnNo: String,
 	AadhaarNo: String, 
 	Name:String,
 	Fname:String,
@@ -13,7 +13,8 @@ const StudentSchema = new mongoose.Schema({
 	AdmissionMode: String,
 	Contact1:String,
 	Contact2:String,
-	Email:String
+	Email:String,
+	Status: String
 });
 
 module.exports = mongoose.model('Student', StudentSchema);
