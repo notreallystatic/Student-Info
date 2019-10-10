@@ -1,49 +1,91 @@
-const express			= require('express'),
-	  app				= express(),
-	  mongoose			= require('mongoose'),
-	  bodyParser		= require('body-parser'),
-	  Student			= require('./models/student'),
-	  Documents			= require('./models/document'),
-	  multer			=require('multer'),
-	  xlstojson         = require("xls-to-json-lc"),
-      xlsxtojson        = require("xlsx-to-json-lc"),
-	  path				= require('path');
+const express				= require('express'),
+	  app					= express(),
+	  mongoose				= require('mongoose'),
+	  bodyParser			= require('body-parser'),
+	  Student				= require('./models/student'),
+	  Documents				= require('./models/document'),
+	  multer				= require('multer'),
+	  xlstojson				= require("xls-to-json-lc"),
+      xlsxtojson			= require("xlsx-to-json-lc"),
+	  fs 					= require('fs'),
+	  User					= require('./models/user'),
+	  passport 				= require('passport'),
+	  LocalStrategy 		= require('passport-local'),
+	  passportLocalMongoose = require('passport-local-mongoose');
 
 mongoose.connect('mongodb://localhost:27017/Student-info', {useNewUrlParser: true},function(error) {});
 
-// app.use(express.static(path.join(/partials,"public")));
+app.use(require("express-session")( {
+	secret: "write anything you want",
+	resave: false,
+	saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());	
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
 app.use(express.static('./views'));
 app.use(express.static(__dirname + "/public"));
 
-    var storage = multer.diskStorage({ //multers disk storage settings
-        destination:'./uploads',
-        filename: function (req, file, cb) {
-            var datetimestamp = Date.now();
-            cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+passport.use(new LocalStrategy(User.authenticate()));
+
+var storage = multer.diskStorage({ //multers disk storage settings
+	destination:'./uploads',
+	filename: function (req, file, cb) {
+    	var datetimestamp = Date.now();
+        cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
         }
     });
 
-    var upload = multer({ //multer settings
-                    storage: storage,
-                    fileFilter : function(req, file, callback) { //file filter
-                        if (['xls', 'xlsx'].indexOf(file.originalname.split('.')[file.originalname.split('.').length-1]) === -1) {
-                            return callback(new Error('Wrong extension type'));
-                        }
-                        callback(null, true);
-                    }
-                }).single('file');
+var upload = multer({ //multer settings
+	storage: storage,
+    fileFilter : function(req, file, callback) { //file filter
+        if (['xls', 'xlsx'].indexOf(file.originalname.split('.')[file.originalname.split('.').length-1]) === -1) {
+        	return callback(new Error('Wrong extension type'));
+        }
+        callback(null, true);
+    }
+}).single('file');
+
+// User registration route
+app.get('/register', (req, res) => {
+	res.render('register');
+});
+// Handling user signup
+app.post('/register', (req, res) => {
+	if (req.body.password === req.body.password1) {
+		User.register(new User({username: req.body.username, FName: req.body.FName, LName: req.body.LName}), req.body.password, (err, user) => {
+			if(err) {
+				return res.render('/register');
+			}
+			passport.authenticate("local")(req, res, () => {
+				res.redirect("/");
+			});
+		});
+	}
+	else {
+		res.redirect('/register');	
+	}
+});
+
 // LOGIN ROUTE
 app.get('/login', (req, res) => {
 	res.render('login');
 });
 
+app.post('/login', passport.authenticate("local", {
+	successRedirect: "/",
+	failureRedirect: "/login"	
+}), (req, res) => {} );
+
 // INDEX ROUTE
-app.get('/', (req, res) => {
+app.get('/', isLoggedIn, (req, res) => {
 	res.render('index');
 });
-app.post('/show', (req, res) => {
+
+app.post('/show', isLoggedIn, (req, res) => {
 	//Fetch the Student ID and show the coresponding details
 	let id = req.body.id;
 	// Search for this id in the DB and return the Student object
@@ -51,11 +93,11 @@ app.post('/show', (req, res) => {
 })
 
 // Add Student Route
-app.get('/addStudent', (req, res) => {
+app.get('/addStudent', isLoggedIn, (req, res) => {
 	res.render('addStudent');
 })
 
-app.get('/students', (req,res) => {
+app.get('/students', isLoggedIn, (req,res) => {
 	Student.find({}, (err, docs) =>{
 		if(err) {
 			cnosole.log(err);
@@ -66,7 +108,7 @@ app.get('/students', (req,res) => {
 });
 
 // Post route to add a new Student to our DB
-app.post('/addStudent', (req, res) => {
+app.post('/addStudent', isLoggedIn, (req, res) => {
 	let student = new Student(req.body);
 	
 	//console.log(req.body.Branch);
@@ -85,64 +127,57 @@ app.post('/addStudent', (req, res) => {
 	res.redirect("/");
 });
 
-app.post('/addStudentFile',(req,res)=>{
- var exceltojson;
-        upload(req,res,function(err){
-            if(err){
-			
-                 res.json({error_code:1,err_desc:err});
-                 return;
+app.post('/addStudentFile', isLoggedIn,(req,res)=>{
+	var exceltojson;
+    upload(req,res,function(err){
+    if(err){
+        res.json({error_code:1,err_desc:err});
+        return;
+    }
+    /** Multer gives us file info in req.file object */
+    if(!req.file){
+    	res.json({error_code:1,err_desc:"No file passed"});
+        return;
+    }
+    /** Check the extension of the incoming file and
+    *  use the appropriate module
+    */
+    if(req.file.originalname.split('.')[req.file.originalname.split('.').length-1] === 'xlsx'){
+        exceltojson = xlsxtojson;
+    } else {
+        exceltojson = xlstojson;
+    }
+    try {
+        exceltojson({
+	        input: req.file.path,
+            output: null, //since we don't need output.json       
+        }, function(err,result){
+            if(err) {
+            res.redirect("/addStudent");
             }
-            /** Multer gives us file info in req.file object */
-            if(!req.file){
-                res.json({error_code:1,err_desc:"No file passed"});
-                return;
+			try {
+ 				fs.unlinkSync(req.file.path);
+			} catch(e) {
+				//error deleting the file
+				console.log("Error deleting file.");
+			}    
+        	for(var i = 0; i < result.length; i++) {
+				var obj = result[i];
+				var st= new Student(obj);
+				st.save(); 
+                console.log(obj);
             }
-            /** Check the extension of the incoming file and
-             *  use the appropriate module
-             */
-            if(req.file.originalname.split('.')[req.file.originalname.split('.').length-1] === 'xlsx'){
-                exceltojson = xlsxtojson;
-            } else {
-                exceltojson = xlstojson;
-            }
-            try {
-                exceltojson({
-                    input: req.file.path,
-                    output: null, //since we don't need output.json
-                    
-                }, function(err,result){
-                    if(err) {
-                      res.redirect("/addStudent");
-                    }
-                    
-                    for(var i = 0; i < result.length; i++) {
-                       var obj = result[i];
-						var st= new Student(obj);
-						st.save();
-                        
-                      
-                        console.log(obj);
-                    }
-
-
-                   res.redirect("/");
-
-
-
-                });
-
-            } catch (e){
-                res.json({error_code:1,err_desc:"Corupted excel file"});
-            }
-        })
-    });
-
-
+            res.redirect("/");
+		});
+	} catch (e){
+		res.json({error_code:1,err_desc:"Corupted excel file"});
+		}
+	})
+});
 // Edit Student Route
 // This route will give provide a choice to the user for selecting a student by which he want to Edit any student.
 // The user can edit any student, either by searching an id or selecting any one from the given list.
-app.get('/edit', (req, res) => {
+app.get('/edit', isLoggedIn, (req, res) => {
 	Student.find({},function(err, data){
 		if (err) {
 			console.log(err);
@@ -152,11 +187,11 @@ app.get('/edit', (req, res) => {
   	});
 });
 
-app.post('/edit', (req, res) => {
+app.post('/edit', isLoggedIn, (req, res) => {
 	res.redirect('/edit/' + req.body.id);
 })
 
-app.get('/edit/:id', (req, res) => {
+app.get('/edit/:id', isLoggedIn, (req, res) => {
 	const id = req.params.id;
 	Student.findOne({"RegnNo": id}, (err, student) => {
 		if (err) {
@@ -168,7 +203,7 @@ app.get('/edit/:id', (req, res) => {
 	});
 });
 
-app.post('/edit/:id', (req, res) => {
+app.post('/edit/:id', isLoggedIn, (req, res) => {
 	const id = req.params.id;
 	let student = req.body;
 	if (req.body.Course === "BTech"){
@@ -192,7 +227,7 @@ app.post('/edit/:id', (req, res) => {
 });
 // Submit Document Route
 // This route will allow the admin to Submit Documents of a Student, either by searching a Student using his id or by selecting one from the given table.
-app.get('/submitDocuments', (req, res) => {
+app.get('/submitDocuments', isLoggedIn, (req, res) => {
 	Student.find({}, (err, data) => {
 		if (err) {
 			console.log(err);
@@ -202,12 +237,12 @@ app.get('/submitDocuments', (req, res) => {
  	});
 });
 
-app.post('/submitDocuments/searchById', (req, res) => {
+app.post('/submitDocuments/searchById', isLoggedIn, (req, res) => {
 	res.redirect('/submitDocuments/' + req.body.id);
 });
 
 // This route will take the admin to submit the documents of the selected/searched student.
-app.get('/submitDocuments/:id', (req, res) => {
+app.get('/submitDocuments/:id', isLoggedIn, (req, res) => {
 	
 	let id = req.params.id;
 	Documents.findOne({"StudentID": id}, (err, document) => {
@@ -239,7 +274,7 @@ app.get('/submitDocuments/:id', (req, res) => {
 	});
 })
 
-app.post('/submitDocuments/:id', (req, res) => {
+app.post('/submitDocuments/:id', isLoggedIn, (req, res) => {
 //	let document  = new Documents(req.body);
 //	console.log(document);
 //	document.StudentID = req.params.id;
@@ -314,7 +349,7 @@ app.post('/submitDocuments/:id', (req, res) => {
 	});
 })
 // Pending Documents Route
-app.get('/pendingDocuments', (req, res) => {
+app.get('/pendingDocuments', isLoggedIn, (req, res) => {
 	Student.find({"Status": "true"}, (err, students) => {
 		if (err) {
 			res.redirect('/');
@@ -323,8 +358,9 @@ app.get('/pendingDocuments', (req, res) => {
 		}
 	});
 })
+
 // Issue Documents Route
-app.get('/issueDocuments', (req, res) => {
+app.get('/issueDocuments', isLoggedIn, (req, res) => {
 	Student.find({}, (err, students) => {
 		if (err) {
 			console.log(err);
@@ -333,8 +369,9 @@ app.get('/issueDocuments', (req, res) => {
 		}
  	});
 })
+
 // View Documents
-app.get('/viewDocuments', (req, res) => {
+app.get('/viewDocuments', isLoggedIn, (req, res) => {
 	Student.find({}, (err, student) => {
 		if (err) {
 			console.log(err);
@@ -343,7 +380,8 @@ app.get('/viewDocuments', (req, res) => {
 		}
 	})
 })
-app.get('/viewDocuments/:id', (req, res) => {
+
+app.get('/viewDocuments/:id', isLoggedIn, (req, res) => {
 	let id = req.params.id;
 	Documents.findOne({"StudentID": id}, (err, document) => {
 		if (err) {
@@ -373,8 +411,9 @@ app.get('/viewDocuments/:id', (req, res) => {
 		}
 	});
 })
+
 // Delete Route
-app.get('/delete', (req, res) => {
+app.get('/delete', isLoggedIn, (req, res) => {
 	Student.find({}, function(err, data){
 		if (err) {
 			console.log(err);
@@ -383,7 +422,8 @@ app.get('/delete', (req, res) => {
 		}
   	});
 })
-app.get('/delete/:id', (req, res) => {
+
+app.get('/delete/:id', isLoggedIn, (req, res) => {
 	let id = req.params.id;
 	Student.remove({"RegnNo" : id},function(err){
 		console.log(err);
@@ -394,6 +434,26 @@ app.get('/delete/:id', (req, res) => {
 	res.redirect("/delete");
 })
 
+// Logout Route
+app.get("/logout", (req, res) => {
+	// It ends the user session
+	req.logout();
+	res.redirect("/login");
+});
+
+// // Redirect to homepage or login route if user enter something else
+// app.get("*", isLoggedIn, (req, res) => {
+// 	res.redirect('/');
+// })
+
+// Middleware to check if a user is logged in or not
+function isLoggedIn(req, res, next) {
+	if (req.isAuthenticated()) {
+		// move along, eveyrthing is fine.
+		return next(); 
+	}
+	res.redirect("/login");
+}
 
 app.listen(3000, () => {	
 	console.log('Server is running...');
