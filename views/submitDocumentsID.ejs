@@ -26,7 +26,6 @@
 	function startup() {
 		
 		let doc = <%- JSON.stringify(docs) %>
-			
 		
 		$(document).ready(() => {
 			for (var key in doc) {
@@ -44,20 +43,32 @@
 		}
 		);
 	}
-			
-						 			// $('#course').val(student.Course); // To select the previous course
-			// $('#' + student.Course).val(student.Branch); // To select the previous branch
-			// $('#AllotmentCategory').val(student.AllotmentCategory); // To select the previous AllotmentCategory
-			// $('#AdmissionMode').val(student.AdmissionMode);
-			// $('#AdmissionYear').val(student.AdmissionYear);
-			// $('#' + student.Gender).prop("checked", true);
-
+	
+	function changeDanger(){
+		let doc = <%- JSON.stringify(docs) %>
+		$(document).ready(() => {
+			for (var key in doc) {
+				if (doc.hasOwnProperty(key)) {
+					var vale = doc[key];
+					for(var t in vale){
+						if (vale.hasOwnProperty(t)) {
+							var val1 = vale[t];
+							if (val1=="Pending"){
+								console.log('#'+key+t);
+								$("#" + key + t).addClass("border border-danger");	
+							}
+						}
+					}
+				}
+			}
+		});
+	}
 </script>
 <script type="text/javascript" language="JavaScript">
 	startup();
 </script>
 <div class="container-fluid table-responsive">
-	<table class="table table-bordered border border-primary" style="border-width:5px !important;" width="100%" cellspacing="0">
+	<table class="table table-bordered border border-dark" style="border-width:5px !important;" width="100%" cellspacing="0">
 		<tbody class="text-center">
 			<tr class="py-2">
 				<td colspan="6"><strong>Student ID : </strong><%=student.RegnNo%></td>
@@ -96,7 +107,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="align-middle font-weight-bold">X-Marksheet</td>
+                        <td class="align-middle font-weight-bold"  >X-Marksheet</td>
                         <td class=" ">
                             <select class="form-control" onchange="setDate('xmsd',this.value)" id="xmarksheetOriginal" name="xmarksheet[Original]" value='<%= docs["xmarksheet"]["Original"] %>'>
                                 <option value="Choose">Choose</option>
@@ -818,4 +829,7 @@
         </div>
     </form>
 </div>
+<script type="text/javascript" language="JavaScript">
+	changeDanger();	
+</script>
 <% include partials/footer %>

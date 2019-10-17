@@ -1,6 +1,14 @@
 <% include partials/header %>
 <script>
     //	function to set today's date in the submission date corresponding to the selected row
+	
+	  function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        w=window.open();
+        w.document.write(printContents);
+        w.print();
+        w.close();
+    }
     function setDate(user, val) {
 		console.log("inside setDate");
         if (val[0] == 'Y') {
@@ -56,6 +64,13 @@
 <script type="text/javascript" language="JavaScript">
 	startup();
 </script>
+<div class="mr-2 mt-1 mb-2 ml-5">
+	<button  class="btn-primary"onclick="printDiv('print-content')" > Print Information </button>
+	
+</div>
+	
+
+<div id="print-content">
 <div class="container-fluid table-responsive">
 	<table class="table table-bordered border border-pprimmamr" style="border-width:5px !important;" width="100%" cellspacing="0">
 		<tbody class="text-center">
@@ -74,6 +89,7 @@
 		</tbody>
 	</table>
 </div>
+
 
 <div class="">
     <form action="" class="w-100">
@@ -813,5 +829,6 @@
 			</div>
 		</fieldset>
     </form>
+</div>
 </div>
 <% include partials/footer %>

@@ -1,0 +1,143 @@
+<% include partials/header %>
+<script> 
+	const fee = <%- JSON.stringify(Fee) %>;
+function startup() {
+		$(document).ready(() => {
+			$('#Fileshifted').val(fee.Fileshifted);
+			$('#ModeofRefund').val(fee.ModeofRefund);
+			
+		});	
+	}
+</script>	
+
+<script type="text/javascript" language="JavaScript">
+	startup();
+</script>
+
+
+
+<div class="container-fluid table-responsive">
+	<table class="table table-bordered border border-dark" style="border-width:5px !important;" width="100%" cellspacing="0">
+		<tbody class="text-center">
+			<tr class="py-2">
+				<td colspan="6"><strong>Student ID : </strong><%=student.RegnNo%></td>
+			</tr>
+			<tr class="py-2">
+				<td colspan="3"><strong>Name : </strong><%= student.Name %></td>
+				<td colspan="3"><strong>Father's Name : </strong><%= student.Fname %></td>
+			</tr>
+			<tr class="py-2">
+				<td colspan="2"><strong>Course : </strong><%=student.Course%></td>
+				<td colspan="2"><strong>Branch : </strong><%=student.Branch%></td>
+				<td colspan="2"><strong>Admission Year : </strong><%=student.AdmissionYear%></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+ <form action="/refundFees/<%=student.RegnNo%>" method="POST">
+<div class="container my-5">
+  <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">File shifted to </label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <select class="form-control w-75" id="Fileshifted" name="Fileshifted" >
+							 <option value="Choose">Choose</option>
+                            <option value="Accounts">Accounts</option>
+                            <option value="Dy. Registrar">Dy. Registrar</option>
+							<option value="Registrar Madam">Registrar Madam</option>
+							<option value="Meena Ji">Meena Ji</option>
+                          
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+	 <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Deposited Fee Rs.</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" id="DepositedFeeRs" name="DepositedFeeRs" placeholder="Deposited Fee Rs" value='<%=Fee.DepositedFeeRs%>'>
+                    </div>
+                </div>
+            </div>
+	 <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5 ">
+                        <label class="font-weight-bold "> Cheque No. </label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" id="RefundedviaChequeNo" name="RefundedviaChequeNo" placeholder="Refunded via Cheque No." value='<%=Fee.RefundedviaChequeNo%>'>
+                    </div>
+                </div>
+            </div>
+	 <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Dated</label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" id="Dated" name="Dated" placeholder="Dated" value='<%=Fee.Dated%>'>
+                    </div>
+                </div>
+            </div>
+	 <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold "> Drawn On </label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" id="Drawnon" name="Drawnon" placeholder="Drawn on" value='<%=Fee.Drawnon%>'>
+                    </div>
+                </div>
+            </div>
+		 <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold ">Refund Amount Rs. </label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" id="RefundAmountRs" name="RefundAmountRs" placeholder="Refund Amount Rs." value='<%=Fee.RefundAmountRs%>'>
+                    </div>
+                </div>
+            </div>
+	  <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold "> Mode of Refund </label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <select class="form-control w-75" id="ModeofRefund" name="ModeofRefund" >
+							 <option value="Choose">Choose</option>
+                            <option value="Speed Post">Speed Post</option>
+							 <option value="Self">Self</option>
+							 <option value="Authorized Person">Authorized Person</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+		 <div class="container form-group">
+                <div class="row form-group justify-content-end">
+                    <div class="col col-md-2 mx-5">
+                        <label class="font-weight-bold "> Remarks </label>
+                    </div>
+                    <div class="col col-md-6 mx-5">
+                        <input type="text" class="form-control w-75" id="Remarks" name="Remarks" placeholder="Remarks" value='<%=Fee.Remarks%>'>
+                    </div>
+                </div>
+            </div>
+	        <div class="container form-group">
+                <div class="row form-group">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary mb-2 px-auto">Submit</button>
+                    </div>
+                </div>
+            </div>
+</div>
+</form>
+
+<% include partials/footer %>

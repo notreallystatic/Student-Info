@@ -4,6 +4,7 @@ const express				= require('express'),
 	  bodyParser			= require('body-parser'),
 	  Student				= require('./models/student'),
 	  Documents				= require('./models/document'),
+	  Fee					=require('./models/fee'),
 	  multer				= require('multer'),
 	  xlstojson				= require("xls-to-json-lc"),
       xlsxtojson			= require("xlsx-to-json-lc"),
@@ -120,7 +121,7 @@ app.post('/addStudent', isLoggedIn, (req, res) => {
 		student.Branch =req.body.Branch[1];
 	}
 	else{
-			student.Branch = req.body.Branch[2];
+		student.Branch = req.body.Branch[2];
 	}
 	console.log(student);
 	student.save();
@@ -207,15 +208,13 @@ app.post('/edit/:id', isLoggedIn, (req, res) => {
 	const id = req.params.id;
 	let student = req.body;
 	if (req.body.Course === "BTech"){
-		student.Branch =req.body.Branch[0];
-		
+		student.Branch =req.body.Branch[0];	
 	}
-
 	else if (req.body.Course === "MTech"){
 		student.Branch =req.body.Branch[1];
 	}
 	else{
-			student.Branch = req.body.Branch[2];
+		student.Branch = req.body.Branch[2];
 	}
 	Student.findByIdAndUpdate(id, student ,(err, student) => {
 		if (err) {
@@ -313,7 +312,6 @@ app.post('/submitDocuments/:id', isLoggedIn, (req, res) => {
 						
 					
 					} else {
-						
 					
 					}
 				});
@@ -329,11 +327,8 @@ app.post('/submitDocuments/:id', isLoggedIn, (req, res) => {
 				Student.findOneAndUpdate({"RegnNo": id},  student, (err, finalStudent) => {
 					if (err) {
 						console.log(err);
-						
-					
 					} else {
 						
-					
 					}
 				});
 			}
@@ -423,6 +418,37 @@ app.get('/delete', isLoggedIn, (req, res) => {
   	});
 })
 
+app.post('/delete', isLoggedIn, (req, res) => {
+	let AdmissionYear = req.body.AdmissionYear;
+	let Course = req.body.Course;
+	
+	Student.find({"AdmissionYear" : AdmissionYear,"Course":Course},function(err,data){
+		if(err){
+			console.log(err);
+		}
+		else{
+			let temp=data
+			for( var i=0;i<temp.length;i++){
+				let id=temp[i]["RegnNo"];
+				console.log(id);
+				Student.remove({"RegnNo" : id},function(err){
+				console.log(err);
+				});
+				Documents.remove({"StudentID" : id},function(err){
+				console.log(err);
+				});
+				Fee.remove({"StudentID" : id},function(err){
+				console.log(err);	
+				});
+				
+			}
+			
+			res.redirect("/delete");
+		}
+	});
+	
+})
+
 app.get('/delete/:id', isLoggedIn, (req, res) => {
 	let id = req.params.id;
 	Student.remove({"RegnNo" : id},function(err){
@@ -431,7 +457,64 @@ app.get('/delete/:id', isLoggedIn, (req, res) => {
 	Documents.remove({"StudentID" : id},function(err){
 		console.log(err);
 	});
+	Fee.remove({"StudentID" : id},function(err){
+		console.log(err);
+	});
 	res.redirect("/delete");
+})
+
+// Refund Fee Route
+app.get('/refundFees', isLoggedIn, (req, res) => {
+	Student.find({}, function(err, data){
+		if (err) {
+			console.log(err);
+		} else {
+			res.render('refundFees', {students: data});
+		}
+  	});
+})
+
+app.get('/refundFees/:id', isLoggedIn, (req, res) => {
+	let id = req.params.id;
+	Student.findOne({"RegnNo" : id}, (err, data) => {
+		if (err) {
+			console.log(err);
+		} else {
+			Fee.findOne({"StudentID" : id}, (err, feeData) => {
+				if (err) {
+					console.log(err);
+				} else {
+					
+					if (feeData) {
+						console.log(feeData);
+						res.render("refundFeesID", {student : data, Fee : feeData});
+					} else {
+						let fees = new Fee();
+						fees.StudentID = id;
+						fees.Fileshifted="Choose";
+						fees.ModeofRefund="Choose";
+						fees.save();
+						console.log("chali")
+						res.render("refundFeesID", {student : data, Fee : fees});	
+					}
+				}
+			});
+		}
+	});
+})
+
+app.post('/refundFees/:id', isLoggedIn, (req, res) => {
+	let id = req.params.id;
+	let fee = req.body;
+	fee.StudentID=id;
+
+	Fee.findOneAndUpdate({"StudentID": id},  fee, (err, finalStudent) => {
+		if (err) {
+			console.log(err);
+		} else {
+			res.redirect('/refundFees');
+		}
+	});
 })
 
 // Logout Route
