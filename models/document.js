@@ -7,6 +7,9 @@ const DocumentSchema= new mongoose.Schema({
 	Status:{
 		type:String
 	},
+	PendingDocuments:{
+		type:String
+	},
 	xmarksheet:{
 		Original:{
 			type:String

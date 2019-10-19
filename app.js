@@ -280,6 +280,7 @@ app.post('/submitDocuments/:id', isLoggedIn, (req, res) => {
 	let newDocument = req.body;
 	newDocument.Status="false";
 	let id = req.params.id;
+	let pd="";
 	// To set the value of Status. True if any of the documents has a pending state, else false..
 	function walk(obj) {
 		for (var key in obj) {
@@ -288,8 +289,22 @@ app.post('/submitDocuments/:id', isLoggedIn, (req, res) => {
 				for(var t in val){
 					if (val.hasOwnProperty(t)) {
 						var val1 = val[t];
+						var k=key;
 						if (val1=="Pending"){
-							newDocument.Status="true";
+							if(k == "SemesterWise"){
+
+								k="Diploma/B.Sc. Marksheet";
+							   
+							   }
+							
+							   
+							  if(k == "Provisional"){
+
+								  k="Provisional Certificate of Diploma/B.Sc.";
+							}
+							pd=pd+' ' +k+'['+t+'] '+' ,';
+							newDocument.Status="true"
+							
 						}
 					}
 				}
@@ -298,6 +313,7 @@ app.post('/submitDocuments/:id', isLoggedIn, (req, res) => {
 	}
 	walk(newDocument);
 	newDocument.StudentID= id;
+	newDocument.PendingDocuments=pd;
 	//console.log(newDocument);
 	
 	 if (newDocument.Status=="true"){
@@ -306,6 +322,7 @@ app.post('/submitDocuments/:id', isLoggedIn, (req, res) => {
 			if (err) {
 			} else {
 				student.Status = "true";
+				student.PendingDocuments=pd;
 				Student.findOneAndUpdate({"RegnNo": id},  student, (err, finalStudent) => {
 					if (err) {
 						console.log(err);
@@ -324,6 +341,7 @@ app.post('/submitDocuments/:id', isLoggedIn, (req, res) => {
 			if (err) {
 			} else {
 				student.Status = "false";
+				student.PendingDocuments="";
 				Student.findOneAndUpdate({"RegnNo": id},  student, (err, finalStudent) => {
 					if (err) {
 						console.log(err);

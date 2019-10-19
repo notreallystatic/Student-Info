@@ -13,7 +13,7 @@
 				<th scope="col">Course</th>
                 <th scope="col">Branch</th>
                 <th scope="col">Year</th>
-                <th scope="col" class="px-auto">Pending</th>
+				 <th scope="col">Pending Docs</th>
             </tr>
         </thead>
         <tbody>
@@ -34,9 +34,10 @@
                     <td>
                         <%= student.AdmissionYear %>
                     </td>
-                    <td class="px-auto">
-                        <a href="/submitDocuments/<%= student.RegnNo %>" class="btn btn-warning btn-sm w-50 mx-auto">Edit</a>
+					 <td>
+                        <%= student.PendingDocuments %>
                     </td>
+                 
                 </tr>
                 <% }) %>
         </tbody>

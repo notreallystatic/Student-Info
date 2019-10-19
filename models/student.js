@@ -14,7 +14,8 @@ const StudentSchema = new mongoose.Schema({
 	Contact1:String,
 	Contact2:String,
 	Email:String,
-	Status: String
+	Status: String,
+	PendingDocuments:String
 });
 
 module.exports = mongoose.model('Student', StudentSchema);
